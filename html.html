@@ -1,0 +1,3010 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Stundenplan</title>
+        <link href="/Content/libs/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+        <link href="/Content/Site.min.css" rel="stylesheet" type="text/css" />
+            <link href="/Content/PrintStyle.min.css" rel="stylesheet" type="text/css" media="print" />
+        <link rel="shortcut icon" href="/Images/favicon.ico" />
+
+	<link href="/Content/TimeTable.css" rel="stylesheet" type="text/css" />
+
+
+        <script src="/Scripts/libs/jquery-2.1.4.min.js" type="text/javascript"></script>
+        <script src="/Scripts/libs/jquery-ui-1.11.4.min.js" type="text/javascript"></script>
+        <script src="/Scripts/AdunisCommon.js" type="text/javascript"></script>
+        <script src="/Scripts/libs/require.js" type="text/javascript"></script>
+
+
+    <script src="/Scripts/TimeTable/TimeTableOverview.js" type="text/javascript"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+    <div class="page">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr class="noprint">
+                <td style="width: 240px;">
+                    <a href="http://www.hsr.ch" target="_blank" style="padding: 0; float: left; vertical-align: top;">
+                        <img src="/Images/Hsr_Logo.png" alt="HSR - Hochschule für Technik Rapperswil"
+                            style="border: 0;" /></a>
+                </td>
+                <td style="vertical-align: bottom;">
+
+
+<ul id="menu" data="prefix=;action=">
+            <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Home">Home</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/Info/Index">Start</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/Settings/Global">Einstellungen</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+        <li class="menuItem active">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Mein Studium Student">Mein Studium</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem active">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/TimeTable/Overview">Stundenplan</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/Exam/Overview/Me">Pr&#252;fungsplan</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Meine Leistungen">Meine Leistungen</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/Reporting/TermReport">Semesterreport</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/Reporting/StudentReport">Leistungsreport</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/Module/Booklet">Modulbeschreibungen</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/Reporting/Statistic">Offene und bestandene Module</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+        <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Informationen Student">Informationen</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/Module/Description">Studiengang-/Modulinfo</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+        <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Administration Student">Administration</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/Reporting/Immatriculation">Immatrikulationsbest&#228;tigung</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/Forms/ChangeContactDetails">Adress&#228;nderung</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/MyStudy/Forms/Leave">Austritt</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+
+                </ul>
+        </li>
+        <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Aktuelles Sem Tab Student">Aktuelles Semester</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Module Tab AktSem Student">Module</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/Module/Register">An-/Abmelden</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/Reporting/ClassOverview/Module">Klassenspiegel</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/Reporting/Registrations/Module">Klassenliste</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+        <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Stundenplan Tab AktSem Student">Stundenplan</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/TimeTable/Register">Bearbeiten</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/TimeTable/Overview/Me">Mein Stundenplan</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/TimeTable/Overview/Student">Stundenplan Mitstudenten</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/TimeTable/Overview/Teacher">Stundenplan Dozenten</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/TimeTable/Overview/Module">Stundenplan Module</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/TimeTable/CompareTimeTable">Stundenplan vergleichen</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+        <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Pr&#252;fung Tab AktSem Student">Pr&#252;fung</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/Exam/Register">An-/Abmelden</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/Exam/Overview/Me">Mein Pr&#252;fungsplan</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/Exam/Overview/Student">Pr&#252;fungsplan Mitstudenten</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/Exam/Overview/Teacher">Pr&#252;fungsplan Dozenten</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/CurrentSem/Exam/Overview/Exam">Pr&#252;fungsplan Module</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+
+                </ul>
+        </li>
+        <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Next Sem Tab Student">N&#228;chstes Semester</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Module Tab NextSem Student">Module</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/Module/Register">An-/Abmelden</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/Reporting/ClassOverview/Module">Klassenspiegel</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/Reporting/Registrations/Module">Klassenliste</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+        <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Stundenplan Tab NextSem Student">Stundenplan</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/TimeTable/Register">Erstellen</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/TimeTable/RegisterSample">Musterstundenplan anmelden</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/TimeTable/Overview/Me">Mein Stundenplan</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/TimeTable/Overview/Student">Stundenplan Mitstudenten</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/TimeTable/Overview/Teacher">Stundenplan Dozenten</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/TimeTable/Overview/Module">Stundenplan Module</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/NextSem/TimeTable/CompareTimeTable">Stundenplan vergleichen</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+
+                </ul>
+        </li>
+        <li class="menuItem">
+            <span class="parentGroup">
+                <nobr><a href="/Info/Overview/Hilfe Tab Student">Hilfe</a></nobr>
+            </span>
+                <ul class="parentGroup">
+                            <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/Help/Student/Reports">Reports</a></nobr>
+            </span>
+        </li>
+        <li class="menuItem">
+            <span class="menuItem">
+                <nobr><a href="/Help/Student/Registrations">Anmeldeprozesse</a></nobr>
+            </span>
+        </li>
+
+                </ul>
+        </li>
+
+</ul>
+
+                </td>
+                <td style="width: 240px; vertical-align: top;">
+                    <a href="http://www.adunis.ch" target="_blank" style="float: right; vertical-align: top; padding: 0 0 8px 8px;">
+                        <img src="/Images/adunis_logo.png" alt="ADUNIS - Administrationssoftware für Hochschulen"
+                            style="border: 0;" />
+                    </a>
+                </td>
+            </tr>
+            <tr class="noprint">
+                <td />
+                <td>
+<ul class="breadcrumb">
+        <li>
+            <a href="/Info/Index" title="Start">
+                <img src="/Images/Home32.png" />
+            </a>
+        </li>
+        <li><a href="/Info/Overview/Mein Studium Student">Mein Studium</a></li>
+        <li><a href="/MyStudy/TimeTable/Overview">Stundenplan</a></li>
+</ul>
+                    <span class="topIcons">
+                        <a href="https://unterricht.hsr.ch/MyStudy/TimeTable/Overview/?print=true" target="_blank" title="Drucken"><img class="printButton" src="/Images/print.png" alt="Drucken" /></a>
+                    </span>
+                </td>
+                <td />
+            </tr>
+            <tr>
+                <td id="selectionContent" class="noprint">
+<form action="/MyStudy/TimeTable/Overview" class="selectionForm" id="selection" method="post">					<div class="selectionArea">
+						<div class="selectionDropDownList">
+							<label for="Parameter_OrgId">Organisationseinheit</label><br />
+<select id="Parameter_OrgId" name="Parameter.OrgId"><option class="selectListLevel1" selected="selected" value="226">Bachelor</option>
+
+<option class="selectListLevel1" value="227">MSE Master</option>
+
+</select>
+						</div>
+						<div class="selectionDropDownList">
+							<label for="Parameter_SemesterId">Semester</label><br />
+<select id="Parameter_SemesterId" name="Parameter.SemesterId"><option class="selectListLevel1" value="856">FS 2017</option>
+
+<option class="selectListLevel1" value="855">HS 2016/2017</option>
+
+<option class="selectListLevel1" value="773">FS 2016</option>
+
+<option class="selectListLevel1" selected="selected" value="772">HS 2015/2016</option>
+
+<option class="selectListLevel1" value="720">FS 2015</option>
+
+<option class="selectListLevel1" value="719">HS 2014/2015</option>
+
+<option class="selectListLevel1" value="622">FS 2014</option>
+
+<option class="selectListLevel1" value="621">HS 2013/2014</option>
+
+<option class="selectListLevel1" value="536">FS 2013</option>
+
+<option class="selectListLevel1" value="535">HS 2012/2013</option>
+
+<option class="selectListLevel1" value="465">FS 2012</option>
+
+<option class="selectListLevel1" value="464">HS 2011/2012</option>
+
+<option class="selectListLevel1" value="403">FS 2011</option>
+
+<option class="selectListLevel1" value="402">HS 2010/2011</option>
+
+<option class="selectListLevel1" value="364">FS 2010</option>
+
+<option class="selectListLevel1" value="363">HS 2009/2010</option>
+
+<option class="selectListLevel1" value="293">FS 2009</option>
+
+<option class="selectListLevel1" value="273">HS 2008/2009</option>
+
+<option class="selectListLevel1" value="200">FS 2008</option>
+
+<option class="selectListLevel1" value="199">HS 2007/2008</option>
+
+<option class="selectListLevel1" value="123">SS 2007</option>
+
+<option class="selectListLevel1" value="105">WS 2006/2007</option>
+
+<option class="selectListLevel1" value="71">SS 2006</option>
+
+<option class="selectListLevel1" value="70">WS 2005/2006</option>
+
+<option class="selectListLevel1" value="53">SS 2005</option>
+
+<option class="selectListLevel1" value="50">WS 2004/2005</option>
+
+<option class="selectListLevel1" value="6">SS 2004</option>
+
+<option class="selectListLevel1" value="5">WS 2003/2004</option>
+
+<option class="selectListLevel1" value="3">SS 2003</option>
+
+<option class="selectListLevel1" value="2">WS 2002/2003</option>
+
+</select>
+						</div>
+					</div>
+					<div class="selectionArea">
+						<div class="selectionDropDownList">
+							<label for="Parameter_DozentRollenId">Dozent</label><br />
+<select id="Parameter_DozentRollenId" name="Parameter.DozentRollenId"><option class="selectListStandardValue" selected="selected" value="-1">[Dozent ausw&#228;hlen]</option>
+
+<option class="selectListLevel1" value="16527">Aberer, Daniel (525471)</option>
+
+<option class="selectListLevel1" value="16947">Aeschbach, Roger (541007)</option>
+
+<option class="selectListLevel1" value="3668">Aliesch, Beat (1173)</option>
+
+<option class="selectListLevel1" value="12263">Altmeyer, Manuel (102072)</option>
+
+<option class="selectListLevel1" value="15755">Augenstein, Oliver (538489)</option>
+
+<option class="selectListLevel1" value="18958">Baier, Urs (5000518)</option>
+
+<option class="selectListLevel1" value="42">B&#228;nziger, Robert (97)</option>
+
+<option class="selectListLevel1" value="20507">Barandun, Gion Andrea (530619)</option>
+
+<option class="selectListLevel1" value="13456">Bauer, Manuel (524591)</option>
+
+<option class="selectListLevel1" value="23843">Bearth, Ren&#233; (5012300)</option>
+
+<option class="selectListLevel1" value="22934">Berger Burger, Heidi (5011269)</option>
+
+<option class="selectListLevel1" value="21653">Bermes, Christian (5001539)</option>
+
+<option class="selectListLevel1" value="12711">Bernath, Andr&#233; (532189)</option>
+
+<option class="selectListLevel1" value="2079">Bernhardsgr&#252;tter, Remo (1064)</option>
+
+<option class="selectListLevel1" value="19112">Bertsch, Stefan (5000571)</option>
+
+<option class="selectListLevel1" value="22791">Biba, Christof (5010743)</option>
+
+<option class="selectListLevel1" value="45">Bichsel-Altherr, Markus (101)</option>
+
+<option class="selectListLevel1" value="5023">Bichsel, Walter (525326)</option>
+
+<option class="selectListLevel1" value="17494">Bl&#228;ser, Luc (541091)</option>
+
+<option class="selectListLevel1" value="46">B&#246;hi, Hannes (106)</option>
+
+<option class="selectListLevel1" value="14666">Bohr, B&#228;rbel (536244)</option>
+
+<option class="selectListLevel1" value="19126">Boller, Simon (535995)</option>
+
+<option class="selectListLevel1" value="15652">Bommer, Christian (593)</option>
+
+<option class="selectListLevel1" value="13467">Bonderer, Reto (533876)</option>
+
+<option class="selectListLevel1" value="20711">Br&#228;m, Roger (102574)</option>
+
+<option class="selectListLevel1" value="187">Br&#228;ndle, Erwin (896)</option>
+
+<option class="selectListLevel1" value="22581">Brugnoni, Silvano (5001211)</option>
+
+<option class="selectListLevel1" value="23467">Br&#252;nn, Markus (5012064)</option>
+
+<option class="selectListLevel1" value="22428">B&#252;chel, Claudio (102318)</option>
+
+<option class="selectListLevel1" value="48">Bucher, Benno (113)</option>
+
+<option class="selectListLevel1" value="23929">Bucher, Matthias (5010793)</option>
+
+<option class="selectListLevel1" value="22453">Budinsky-Zimmermann, Simone (5010550)</option>
+
+<option class="selectListLevel1" value="188">Bunge, Rainer (929)</option>
+
+<option class="selectListLevel1" value="16382">Burkhardt, Michael (535732)</option>
+
+<option class="selectListLevel1" value="4066">Cejka, Andrea (1233)</option>
+
+<option class="selectListLevel1" value="23655">Christen, Reto (5000046)</option>
+
+<option class="selectListLevel1" value="50">Condrau, Victor (117)</option>
+
+<option class="selectListLevel1" value="12099">Corbat, Thomas (102459)</option>
+
+<option class="selectListLevel1" value="16291">Cossmann, Peter (538884)</option>
+
+<option class="selectListLevel1" value="18270">Danuser, Gian (535987)</option>
+
+<option class="selectListLevel1" value="22610">Das Gupta, Raphael (5010658)</option>
+
+<option class="selectListLevel1" value="5116">Davidson, Brett (525568)</option>
+
+<option class="selectListLevel1" value="19121">De Coppi, Paola (5000575)</option>
+
+<option class="selectListLevel1" value="56">Deger, Yasar (126)</option>
+
+<option class="selectListLevel1" value="17641">Dietschweiler, Patrik (528867)</option>
+
+<option class="selectListLevel1" value="62">Ebneter, Josef (139)</option>
+
+<option class="selectListLevel1" value="17729">Egger, Urs (936)</option>
+
+<option class="selectListLevel1" value="16855">Egli, Martin (1053)</option>
+
+<option class="selectListLevel1" value="5629">Ehrig, Frank (527139)</option>
+
+<option class="selectListLevel1" value="65">Ehrismann, Dieter (143)</option>
+
+<option class="selectListLevel1" value="17846">Engelke, Dirk (541726)</option>
+
+<option class="selectListLevel1" value="13970">F&#228;h, Claudio Giorgio (534492)</option>
+
+<option class="selectListLevel1" value="23829">Faiss, J&#252;rgen (5012295)</option>
+
+<option class="selectListLevel1" value="18994">Fleischmann, Patrick (531214)</option>
+
+<option class="selectListLevel1" value="17484">Forrer, Andreas (521214)</option>
+
+<option class="selectListLevel1" value="22664">Franz, Thomas (539634)</option>
+
+<option class="selectListLevel1" value="22909">Frey, Ruedi (5011490)</option>
+
+<option class="selectListLevel1" value="12813">Friedli Kl&#246;tzli, Beatrice (526606)</option>
+
+<option class="selectListLevel1" value="16387">Friedl, Markus (538897)</option>
+
+<option class="selectListLevel1" value="12274">Frigerio, Antonio (531949)</option>
+
+<option class="selectListLevel1" value="17539">Frischknecht, Harry (1010)</option>
+
+<option class="selectListLevel1" value="23177">Fuchs, Claudio (5011820)</option>
+
+<option class="selectListLevel1" value="13854">Fuchs, Frederik (534247)</option>
+
+<option class="selectListLevel1" value="18057">Fuchs, Roman (542152)</option>
+
+<option class="selectListLevel1" value="17935">Gadient, Hansj&#246;rg (531138)</option>
+
+<option class="selectListLevel1" value="18973">Gamboni, Gianreto (5000514)</option>
+
+<option class="selectListLevel1" value="17848">Gasser, Markus (541730)</option>
+
+<option class="selectListLevel1" value="18073">Gehrig, Silvan (531077)</option>
+
+<option class="selectListLevel1" value="15539">Geidl, Martin (535351)</option>
+
+<option class="selectListLevel1" value="17718">Gfeller, Michael (531124)</option>
+
+<option class="selectListLevel1" value="11566">Giersche, Wolfgang (530039)</option>
+
+<option class="selectListLevel1" value="80">Glatz, Eduard (173)</option>
+
+<option class="selectListLevel1" value="13478">Graf, Mario (533909)</option>
+
+<option class="selectListLevel1" value="22372">Graf, Markus (5010527)</option>
+
+<option class="selectListLevel1" value="4333">Gysin, Hanspeter (1261)</option>
+
+<option class="selectListLevel1" value="17582">Hagedorn, Carsten (541306)</option>
+
+<option class="selectListLevel1" value="84">Hardegger, Paul (190)</option>
+
+<option class="selectListLevel1" value="21924">Hauser, Marcus (5010180)</option>
+
+<option class="selectListLevel1" value="177">Heinzmann, Peter (870)</option>
+
+<option class="selectListLevel1" value="5630">Henne, Markus (527138)</option>
+
+<option class="selectListLevel1" value="23691">Heye, Corinna (5011979)</option>
+
+<option class="selectListLevel1" value="18296">Himmelmann, Lin (542829)</option>
+
+<option class="selectListLevel1" value="18890">Hofer, Peter (5000480)</option>
+
+<option class="selectListLevel1" value="6579">Holenweg, Daniel (528323)</option>
+
+<option class="selectListLevel1" value="14088">Horlacher, Thomas (524462)</option>
+
+<option class="selectListLevel1" value="17870">H&#246;rler, Philipp (533636)</option>
+
+<option class="selectListLevel1" value="14010">Huber, Marcel (527280)</option>
+
+<option class="selectListLevel1" value="17503">Hugenschmidt, Johannes (541102)</option>
+
+<option class="selectListLevel1" value="18955">Hugi, Christoph (5000517)</option>
+
+<option class="selectListLevel1" value="19109">Hunold, Mathias (531457)</option>
+
+<option class="selectListLevel1" value="2135">Hunziker, Christopher T. (877)</option>
+
+<option class="selectListLevel1" value="176">Huser, Hansj&#246;rg (869)</option>
+
+<option class="selectListLevel1" value="23697">Huser, Markus (5012224)</option>
+
+<option class="selectListLevel1" value="18055">J&#228;ger, Cornelius (531500)</option>
+
+<option class="selectListLevel1" value="173">Joller, Josef M. (860)</option>
+
+<option class="selectListLevel1" value="22660">Jousset, Pierre (5010756)</option>
+
+<option class="selectListLevel1" value="5070">Jurt Massey, Andrea (525472)</option>
+
+<option class="selectListLevel1" value="15553">Kammhuber, Stefan (537665)</option>
+
+<option class="selectListLevel1" value="2078">Karn, Susanne (1055)</option>
+
+<option class="selectListLevel1" value="17487">Keel, Guido (541067)</option>
+
+<option class="selectListLevel1" value="161">Keller, Daniel (758)</option>
+
+<option class="selectListLevel1" value="16664">Keller, Daniel F. (540086)</option>
+
+<option class="selectListLevel1" value="10222">Keller, Martin (238)</option>
+
+<option class="selectListLevel1" value="131">Keller, Stefan F. (353)</option>
+
+<option class="selectListLevel1" value="13185">Kemper, Raimund (530802)</option>
+
+<option class="selectListLevel1" value="22798">Kerschbaumer, Gabriele (518151)</option>
+
+<option class="selectListLevel1" value="14120">Kieffer, Marie-Louise (429)</option>
+
+<option class="selectListLevel1" value="108">Kleiner, Joachim (246)</option>
+
+<option class="selectListLevel1" value="19243">Kluser, Reto (535487)</option>
+
+<option class="selectListLevel1" value="3424">Kneub&#252;hler, Thomas (1189)</option>
+
+<option class="selectListLevel1" value="18031">Knutti, Fabian (524564)</option>
+
+<option class="selectListLevel1" value="5669">Koch, Frank (527201)</option>
+
+<option class="selectListLevel1" value="4807">Koller-Hodac, Agathe (1269)</option>
+
+<option class="selectListLevel1" value="20400">Koller, Marcel (5000565)</option>
+
+<option class="selectListLevel1" value="23180">Koppitz, Robert (538885)</option>
+
+<option class="selectListLevel1" value="110">Kopp, Thomas (251)</option>
+
+<option class="selectListLevel1" value="11565">Kossmann, Beatrix (530038)</option>
+
+<option class="selectListLevel1" value="2904">Kottmann, Markus (1184)</option>
+
+<option class="selectListLevel1" value="18828">Krayenb&#252;hl-Tapponnier, Axelle (5000459)</option>
+
+<option class="selectListLevel1" value="23944">Kretschmar, Lukas (534428)</option>
+
+<option class="selectListLevel1" value="18977">Krieger, Mark (5000525)</option>
+
+<option class="selectListLevel1" value="22318">Kruk, Karol (5010508)</option>
+
+<option class="selectListLevel1" value="23759">K&#252;ffer, Christoph (5012213)</option>
+
+<option class="selectListLevel1" value="5162">Kulcs&#225;r, Kl&#225;ra (525798)</option>
+
+<option class="selectListLevel1" value="115">Kunz, Hansruedi (260)</option>
+
+<option class="selectListLevel1" value="4128">Kunz, Stefan (588)</option>
+
+<option class="selectListLevel1" value="10214">Kytzia, Susanne (529046)</option>
+
+<option class="selectListLevel1" value="22430">Lamp&#233;rth, Michael (5010528)</option>
+
+<option class="selectListLevel1" value="22666">Lees, Severin (540660)</option>
+
+<option class="selectListLevel1" value="22625">Lehmann, Michael (5010265)</option>
+
+<option class="selectListLevel1" value="12268">Leonardo, Domenico (102175)</option>
+
+<option class="selectListLevel1" value="23831">Leonhardt, Bernd (5012291)</option>
+
+<option class="selectListLevel1" value="97">Letsch, Thomas (221)</option>
+
+<option class="selectListLevel1" value="99">Leutert, Fredy (225)</option>
+
+<option class="selectListLevel1" value="22366">Loichinger, Albert (5010515)</option>
+
+<option class="selectListLevel1" value="22443">Luban, Katharina (5010571)</option>
+
+<option class="selectListLevel1" value="21746">Malacarne, Selina Rea (529339)</option>
+
+<option class="selectListLevel1" value="21938">Mannsky, Alexandra (5010192)</option>
+
+<option class="selectListLevel1" value="16329">Martignoli, Stefan (538970)</option>
+
+<option class="selectListLevel1" value="198">Mathis, Heinz (963)</option>
+
+<option class="selectListLevel1" value="5117">Maurhofer, Stefan (519103)</option>
+
+<option class="selectListLevel1" value="22336">Mehta, Farhad D. (5001386)</option>
+
+<option class="selectListLevel1" value="18056">Meier, Boris (541752)</option>
+
+<option class="selectListLevel1" value="23805">Meier, Florian (540648)</option>
+
+<option class="selectListLevel1" value="142">Meier, J&#252;rg (533)</option>
+
+<option class="selectListLevel1" value="10226">Meier, Urs (524059)</option>
+
+<option class="selectListLevel1" value="22691">Miracco, Sergio (5010539)</option>
+
+<option class="selectListLevel1" value="13856">Mosimann-Nakanishi, Ikuko (534248)</option>
+
+<option class="selectListLevel1" value="14338">M&#252;ller Khan, Tina (535101)</option>
+
+<option class="selectListLevel1" value="10213">M&#252;ller, Andreas (263)</option>
+
+<option class="selectListLevel1" value="21697">M&#252;ller, Markus (5010044)</option>
+
+<option class="selectListLevel1" value="15049">Murbach, Rolf (536407)</option>
+
+<option class="selectListLevel1" value="19310">M&#252;rmann, Mario (5000584)</option>
+
+<option class="selectListLevel1" value="23303">Niederberger, Thomas (528825)</option>
+
+<option class="selectListLevel1" value="16302">Nordborg, Henrik (538896)</option>
+
+<option class="selectListLevel1" value="21928">Noser, Anja (5010183)</option>
+
+<option class="selectListLevel1" value="163">Nyffenegger, Brigitte (762)</option>
+
+<option class="selectListLevel1" value="21302">Nyffenegger, Felix (539814)</option>
+
+<option class="selectListLevel1" value="52">Oesch, Thomas (120)</option>
+
+<option class="selectListLevel1" value="4987">Peretti, Guillermo (525316)</option>
+
+<option class="selectListLevel1" value="23654">PETER, Manuel (533079)</option>
+
+<option class="selectListLevel1" value="57">Petschek, Peter (128)</option>
+
+<option class="selectListLevel1" value="16589">Pfyl, Markus (532253)</option>
+
+<option class="selectListLevel1" value="63">Pletscher, Hans Heinrich (140)</option>
+
+<option class="selectListLevel1" value="2902">Putscher, Thomas (981)</option>
+
+<option class="selectListLevel1" value="23832">Radziszewski, Artur (5012296)</option>
+
+<option class="selectListLevel1" value="22377">Raillard, Daniel (533148)</option>
+
+<option class="selectListLevel1" value="75">Rinkel, Andreas (160)</option>
+
+<option class="selectListLevel1" value="14415">Rommel, Matthias (535449)</option>
+
+<option class="selectListLevel1" value="179">Rudin, Hans (873)</option>
+
+<option class="selectListLevel1" value="16296">R&#252;egg, Christoph (538887)</option>
+
+<option class="selectListLevel1" value="146">Ruggli, Sandro A. (541)</option>
+
+<option class="selectListLevel1" value="22855">Ruh, Monika (5011337)</option>
+
+<option class="selectListLevel1" value="17738">R&#252;ppel, Rita (533769)</option>
+
+<option class="selectListLevel1" value="22605">Rusterholz, Patrik Andreas (538664)</option>
+
+<option class="selectListLevel1" value="16588">R&#252;ttimann, Stefan (539838)</option>
+
+<option class="selectListLevel1" value="21387">Sabathy, Mischa (537719)</option>
+
+<option class="selectListLevel1" value="6232">Sch&#228;llibaum, Ueli (517109)</option>
+
+<option class="selectListLevel1" value="2139">Schaufelberger, Rainer (205)</option>
+
+<option class="selectListLevel1" value="23769">Schenk, Monika (5012262)</option>
+
+<option class="selectListLevel1" value="21264">Schifferle, Marina (538235)</option>
+
+<option class="selectListLevel1" value="21680">Schlatter, Martin (101217)</option>
+
+<option class="selectListLevel1" value="23397">Schmid, Adrian (5012009)</option>
+
+<option class="selectListLevel1" value="23913">Schmidlin, Luca (537936)</option>
+
+<option class="selectListLevel1" value="21931">Schmid, Lukas (5010185)</option>
+
+<option class="selectListLevel1" value="14318">Schmitt, Hans-Michael (6)</option>
+
+<option class="selectListLevel1" value="16300">Schneider, Andreas (532806)</option>
+
+<option class="selectListLevel1" value="2">Schneider, Hansruedi (9)</option>
+
+<option class="selectListLevel1" value="4068">Sch&#246;ffel, Joachim (1232)</option>
+
+<option class="selectListLevel1" value="23926">Schubiger, Alain (540882)</option>
+
+<option class="selectListLevel1" value="23930">Schueller, Michael (5010784)</option>
+
+<option class="selectListLevel1" value="22665">Schumacher, Carmelo (541368)</option>
+
+<option class="selectListLevel1" value="154">Schuster, Guido (670)</option>
+
+<option class="selectListLevel1" value="22789">Schwarz, Roman (540723)</option>
+
+<option class="selectListLevel1" value="15428">Schwendemann, Daniel (537056)</option>
+
+<option class="selectListLevel1" value="23745">Seelhofer, Martin (533580)</option>
+
+<option class="selectListLevel1" value="8">Seippel, Andr&#233; (23)</option>
+
+<option class="selectListLevel1" value="16492">Sidiropoulos, Paul (539303)</option>
+
+<option class="selectListLevel1" value="11">Siegrist, Dominik (27)</option>
+
+<option class="selectListLevel1" value="16644">Smajic, Jasmin (540047)</option>
+
+<option class="selectListLevel1" value="6013">Sohrweide, Anita (101730)</option>
+
+<option class="selectListLevel1" value="5020">Sommerlad, Peter (525323)</option>
+
+<option class="selectListLevel1" value="21286">Soukup, Jochen (5001402)</option>
+
+<option class="selectListLevel1" value="5022">Sourlier, David (525325)</option>
+
+<option class="selectListLevel1" value="22238">Spalinger, Ueli (5010433)</option>
+
+<option class="selectListLevel1" value="201">Speerli, J&#252;rg (1031)</option>
+
+<option class="selectListLevel1" value="13">Stadelmann, Silvia (31)</option>
+
+<option class="selectListLevel1" value="14">Stadelwieser, J&#252;rg (32)</option>
+
+<option class="selectListLevel1" value="20505">Stapfer, Andr&#233; (5000886)</option>
+
+<option class="selectListLevel1" value="21936">Stark, Mario (5010190)</option>
+
+<option class="selectListLevel1" value="5021">Steffen, Andreas (525324)</option>
+
+<option class="selectListLevel1" value="14281">Steiger, Marco (534871)</option>
+
+<option class="selectListLevel1" value="15490">Steiner, Lucas (537504)</option>
+
+<option class="selectListLevel1" value="22511">Steiner, Rolf (5010599)</option>
+
+<option class="selectListLevel1" value="18004">Sternath, Bruno (542230)</option>
+
+<option class="selectListLevel1" value="194">Stettler, Beat (946)</option>
+
+<option class="selectListLevel1" value="11984">Stocker, Mirko (102555)</option>
+
+<option class="selectListLevel1" value="4759">Stoll, Jean-Marc (1267)</option>
+
+<option class="selectListLevel1" value="13472">Stolze, Markus (533889)</option>
+
+<option class="selectListLevel1" value="20963">Studer, Mario (101860)</option>
+
+<option class="selectListLevel1" value="17842">St&#252;rwald, Simone (541724)</option>
+
+<option class="selectListLevel1" value="22580">Suter, Toni (539778)</option>
+
+<option class="selectListLevel1" value="14260">Tietje, Olaf (534797)</option>
+
+<option class="selectListLevel1" value="22407">Tr&#233;f&#225;s, David (5010549)</option>
+
+<option class="selectListLevel1" value="18269">Trummer, Michael (535341)</option>
+
+<option class="selectListLevel1" value="17869">T&#252;scher, Adrian (531496)</option>
+
+<option class="selectListLevel1" value="21">Ulmann, Walter (46)</option>
+
+<option class="selectListLevel1" value="18975">Ulrich, Adrian (5000524)</option>
+
+<option class="selectListLevel1" value="16542">Unterer, Thomas (526888)</option>
+
+<option class="selectListLevel1" value="24">Verhein-Jarren, Annette (49)</option>
+
+<option class="selectListLevel1" value="25">V&#246;geli, Nicole (51)</option>
+
+<option class="selectListLevel1" value="23980">Vollenweider, Bruno (533230)</option>
+
+<option class="selectListLevel1" value="22380">von Arx, Deborah (5010098)</option>
+
+<option class="selectListLevel1" value="23927">Walker, Jonas (540901)</option>
+
+<option class="selectListLevel1" value="3663">Weber Inderbitzi, Michelle (1208)</option>
+
+<option class="selectListLevel1" value="14104">Wegmann, Simon (101167)</option>
+
+<option class="selectListLevel1" value="16333">Weibel, Reto (538995)</option>
+
+<option class="selectListLevel1" value="28">Weilenmann, Martin (60)</option>
+
+<option class="selectListLevel1" value="17845">Wemh&#246;ner, Carsten (541725)</option>
+
+<option class="selectListLevel1" value="13468">Wenk, Felix (533883)</option>
+
+<option class="selectListLevel1" value="20437">Wenner, Dieter (5000722)</option>
+
+<option class="selectListLevel1" value="11238">Widmer, Adolf Christian (529739)</option>
+
+<option class="selectListLevel1" value="17812">Widmer, Peter (541663)</option>
+
+<option class="selectListLevel1" value="12965">Willi, Roman (101978)</option>
+
+<option class="selectListLevel1" value="21292">Winterhalter, Christian (537730)</option>
+
+<option class="selectListLevel1" value="30">Winzer, Thomas (64)</option>
+
+<option class="selectListLevel1" value="16278">Wirz-T&#246;ndury, Christian (65)</option>
+
+<option class="selectListLevel1" value="17520">Wolf W&#252;st, Karin (635)</option>
+
+<option class="selectListLevel1" value="16298">W&#252;st, Theodor (538866)</option>
+
+<option class="selectListLevel1" value="15425">Zbinden, Paul (537055)</option>
+
+<option class="selectListLevel1" value="10215">Zgraggen, Bernhard (529048)</option>
+
+<option class="selectListLevel1" value="19150">Zimmermann, Olaf (5000585)</option>
+
+<option class="selectListLevel1" value="14464">Z&#252;ger, Alfred (535527)</option>
+
+<option class="selectListLevel1" value="23656">Zurbr&#252;gg, Thomas (5012196)</option>
+
+<option class="selectListLevel1" value="37">Zweibr&#252;cken, Klaus (81)</option>
+
+</select>
+						</div>
+						<div class="selectionDropDownList">
+							<label for="Parameter_ModulId">Modul</label><br />
+<select id="Parameter_ModulId" name="Parameter.ModulId"><option class="selectListStandardValue" selected="selected" value="-1">[Modul ausw&#228;hlen]</option>
+
+<option class="selectListLevel1" value="51667">.Net Technologien [M_MsTe] (I)</option>
+
+<option class="selectListLevel1" value="52146">Abfallwirtschaft und -technologien [M_AbfTec] (EEU)</option>
+
+<option class="selectListLevel1" value="51699">Advanced Patterns und Frameworks [M_APF] (I)</option>
+
+<option class="selectListLevel1" value="51685">Algorithmen und Datenstrukturen 2 [M_AD2] (I)</option>
+
+<option class="selectListLevel1" value="52232">Analysis 1 (EEU) [M_An1EU] (MN)</option>
+
+<option class="selectListLevel1" value="52236">Analysis 1 (M-I) [M_An1M] (MN)</option>
+
+<option class="selectListLevel1" value="52043">Analysis 1 f&#252;r Bauingenieurwesen [M_An1B] (MN)</option>
+
+<option class="selectListLevel1" value="51585">Analysis 1 f&#252;r Informatiker [M_An1I] (MN)</option>
+
+<option class="selectListLevel1" value="52240">Analysis 1a f&#252;r Elektrotechnik [M_An1aE] (MN)</option>
+
+<option class="selectListLevel1" value="52242">Analysis 1b f&#252;r Elektrotechnik [M_An1bE] (MN)</option>
+
+<option class="selectListLevel1" value="52047">Analysis 3 f&#252;r Bauingenieurwesen [M_An3B] (MN)</option>
+
+<option class="selectListLevel1" value="53450">Angewandte Programmierung [M_APROG] (WING)</option>
+
+<option class="selectListLevel1" value="52392">Angewandter Elektromagnetismus: Felder und Wellen [M_ElMag] (E)</option>
+
+<option class="selectListLevel1" value="52179">Anlagenbau und Projektmanagement 1 [M_ABPM1] (EEU)</option>
+
+<option class="selectListLevel1" value="51701">Application Architecture [M_AppArch] (I)</option>
+
+<option class="selectListLevel1" value="52757">Automation 1 [M_AutoT1] (M)</option>
+
+<option class="selectListLevel1" value="52772">Automation 3 [M_AutoT3] (M)</option>
+
+<option class="selectListLevel1" value="52004">Bachelor-Arbeit Bauingenieurwesen [M_BAB] (B)</option>
+
+<option class="selectListLevel1" value="52132">Bachelor-Arbeit EEU [M_BAEU] (EEU)</option>
+
+<option class="selectListLevel1" value="52420">Bachelor-Arbeit Elektrotechnik [M_BAE] (E)</option>
+
+<option class="selectListLevel1" value="51644">Bachelor-Arbeit Informatik [M_BAI] (I)</option>
+
+<option class="selectListLevel1" value="52447">Bachelor-Arbeit Landschaftsarchitektur [M_BAL] (L)</option>
+
+<option class="selectListLevel1" value="52766">Bachelor-Arbeit Maschinentechnik [M_BAM] (M)</option>
+
+<option class="selectListLevel1" value="52604">Bachelor-Arbeit Raumplanung [M_BAR] (R)</option>
+
+<option class="selectListLevel1" value="52484">Bauadministration 1 [M_Bauadmin 1] (L)</option>
+
+<option class="selectListLevel1" value="52049">Bauplanungs-Management [M_BPMan] (KG)</option>
+
+<option class="selectListLevel1" value="52011">Baustatik 1 [M_Bausta1] (B)</option>
+
+<option class="selectListLevel1" value="53314">Baustatik 3 [M_Baustat3] (B)</option>
+
+<option class="selectListLevel1" value="52130">Baustoffe 1 [M_Baustoff1] (B)</option>
+
+<option class="selectListLevel1" value="51669">Betriebssysteme 1 [M_Bsys1] (I)</option>
+
+<option class="selectListLevel1" value="52095">Boden und Fels 1 [M_BuF1] (B)</option>
+
+<option class="selectListLevel1" value="52119">Boden und Fels 3 [M_BuF3] (B)</option>
+
+<option class="selectListLevel1" value="52579">Business Plan 1 f&#252;r Landschaftsarchitektur [M_BuPl] (KG)</option>
+
+<option class="selectListLevel1" value="51611">Business und Recht 1 [M_BuRe1] (KG)</option>
+
+<option class="selectListLevel1" value="52318">BWL-Grundlagen [M_BWL] (WING)</option>
+
+<option class="selectListLevel1" value="51687">C++ [M_CPl] (I)</option>
+
+<option class="selectListLevel1" value="52183">CAD (EEU) [M_CADEU] (EEU)</option>
+
+<option class="selectListLevel1" value="52322">CAD (WING) - Aufbau [M_CADWA] (WING)</option>
+
+<option class="selectListLevel1" value="55662">CAD (WING) - Grundlagen [M_CADWG] (WING)</option>
+
+<option class="selectListLevel1" value="52112">CAD f&#252;r Bauingenieure - Einf&#252;hrung [M_CADB] (B)</option>
+
+<option class="selectListLevel1" value="52144">CFD und FEM (EEU) [M_CFD_FEM] (EEU)</option>
+
+<option class="selectListLevel1" value="51722">Challenge Projekte 1 [M_ChallP1] (I)</option>
+
+<option class="selectListLevel1" value="52272">Change Management [M_CHANGE] (WING)</option>
+
+<option class="selectListLevel1" value="52705">Chemie 1 (Bauingenieurwesen) [M_Chem1B] (MN)</option>
+
+<option class="selectListLevel1" value="52226">Chemie 1 (EEU) [M_Chem1EU] (MN)</option>
+
+<option class="selectListLevel1" value="52060">Chemie 1 [M_Chem1] (MN)</option>
+
+<option class="selectListLevel1" value="51593">Chinesisch 1 [M_Chin1] (KG)</option>
+
+<option class="selectListLevel1" value="55643">Chinesisch 2 [M_Chin2] (KG)</option>
+
+<option class="selectListLevel1" value="51691">Cloud Infrastructure [M_CldInf] (I)</option>
+
+<option class="selectListLevel1" value="55549">Compilerbau und Programmiermodelle [M_CoPro] (I)</option>
+
+<option class="selectListLevel1" value="52398">Computer Engineering 1 [M_ComEng1] (E)</option>
+
+<option class="selectListLevel1" value="52181">Computeranwendungen [M_CompAw] (M)</option>
+
+<option class="selectListLevel1" value="51703">Computernetze 1 [M_CN1] (I)</option>
+
+<option class="selectListLevel1" value="51648">Datenbanksysteme 1 [M_Dbs1] (I)</option>
+
+<option class="selectListLevel1" value="52252">Differentialgleichungen (EEU) [M_DiffGEU] (MN)</option>
+
+<option class="selectListLevel1" value="52695">Differentialgleichungen (M-I) [M_DiffGlM] (MN)</option>
+
+<option class="selectListLevel1" value="52394">Digital Image Processing 1 [M_DigPro1] (E)</option>
+
+<option class="selectListLevel1" value="52402">Digital Microelectronics [M_DigME] (E)</option>
+
+<option class="selectListLevel1" value="52370">Digital Signal Processing 1 [M_DigSig1] (E)</option>
+
+<option class="selectListLevel1" value="52114">Digitale Daten im Bauingenieurwesen - Verarbeitung/Darstellung [M_DigDa] (B)</option>
+
+<option class="selectListLevel1" value="52404">Digitaltechnik [M_DigT] (E)</option>
+
+<option class="selectListLevel1" value="51591">Diskrete Mathematik f&#252;r Informatik  [M_DMI] (MN)</option>
+
+<option class="selectListLevel1" value="52818">Einf&#252;hrung Programmierung [M_ProgEinf] (M)</option>
+
+<option class="selectListLevel1" value="52356">Elektronik 1 [M_Elo1] (E)</option>
+
+<option class="selectListLevel1" value="52348">Elektro-Praktikum 1 [M_EP1] (E)</option>
+
+<option class="selectListLevel1" value="52202">Elektrotechnik (EEU) [M_ETEU] (EEU)</option>
+
+<option class="selectListLevel1" value="52406">Elektrotechnik 1 [M_ELT1] (E)</option>
+
+<option class="selectListLevel1" value="52296">Elektrotechnik 2 (WING) [M_ELTECH2W] (WING)</option>
+
+<option class="selectListLevel1" value="52410">Elektrotechnik 3 [M_ELT3] (E)</option>
+
+<option class="selectListLevel1" value="52374">Embedded Software Engineering 1 [M_EmbSW1] (E)</option>
+
+<option class="selectListLevel1" value="52378">Embedded Systems 1 [M_EmbSys1] (E)</option>
+
+<option class="selectListLevel1" value="51622">English: How Things work [M_EnglHTw] (KG)</option>
+
+<option class="selectListLevel1" value="51624">English: The World of Science [M_EnglScience] (KG)</option>
+
+<option class="selectListLevel1" value="52326">Entscheidungsmethodik [M_ENTSCHEID] (WING)</option>
+
+<option class="selectListLevel1" value="52511">Entwurf 1 [M_Entwu1] (L)</option>
+
+<option class="selectListLevel1" value="52501">Entwurf 2 [M_Entwu2] (L)</option>
+
+<option class="selectListLevel1" value="52505">Entwurf 4 [M_Entwu4] (L)</option>
+
+<option class="selectListLevel1" value="52731">Entwurf und Qualit&#228;t 2 [M_EQ2] (M)</option>
+
+<option class="selectListLevel1" value="52816">Entwurf und Qualit&#228;t 3 [M_EQ3] (M)</option>
+
+<option class="selectListLevel1" value="52824">EQ2 - Sicherheitstechnik [M_SITEC] (M)</option>
+
+<option class="selectListLevel1" value="52298">Fertigung und Montage 2 [M_FERT2] (WING)</option>
+
+<option class="selectListLevel1" value="52264">Festigkeitslehre (WING) [M_FEST] (WING)</option>
+
+<option class="selectListLevel1" value="51597">Franz&#246;sisch 2 [M_Franz2] (KG)</option>
+
+<option class="selectListLevel1" value="52542">Freiraumplanung 3 [M_FPl3] (L)</option>
+
+<option class="selectListLevel1" value="52256">F&#252;hrungskommunikation f&#252;r IngenieurInnen [M_FKIEU] (KG)</option>
+
+<option class="selectListLevel1" value="52599">F&#252;hrungskommunikation im internationalen Arbeitsmarkt [M_FKIA] (KG)</option>
+
+<option class="selectListLevel1" value="52466">Garten- &amp; Landschaftsbau 1 [M_GaLaB1] (L)</option>
+
+<option class="selectListLevel1" value="52463">Garten- &amp; Landschaftsbau 3 [M_GaLaB3] (L)</option>
+
+<option class="selectListLevel1" value="52480">Garten- &amp; Landschaftsbau 5 [M_GaLaB5] (L)</option>
+
+<option class="selectListLevel1" value="52453">Garten- &amp; Landschaftsbau 6 [M_GaLaB6] (L)</option>
+
+<option class="selectListLevel1" value="52142">Geb&#228;udetechnik, Bauphysik [M_GebTBau] (EEU)</option>
+
+<option class="selectListLevel1" value="52013">Hydraulik und Hydrologie [M_HyHy] (B)</option>
+
+<option class="selectListLevel1" value="55650">Individuelles Vertiefungsprojekt (Kern) [M_IVPK] (L)</option>
+
+<option class="selectListLevel1" value="55648">Individuelles Vertiefungsprojekt (Profil) [M_IVP] (L)</option>
+
+<option class="selectListLevel1" value="51665">Informations- und Codierungstheorie [M_ICTh] (I)</option>
+
+<option class="selectListLevel1" value="51658">Informationssicherheit 2 [M_InfSi2] (I)</option>
+
+<option class="selectListLevel1" value="52723">Innovation 1 [M_Inno1] (M)</option>
+
+<option class="selectListLevel1" value="52728">Innovation 3 [M_Inno3] (M)</option>
+
+<option class="selectListLevel1" value="52770">Innovation 5 [M_Inno5] (M)</option>
+
+<option class="selectListLevel1" value="52439">Integraltransformationen [M_IntTra] (MN)</option>
+
+<option class="selectListLevel1" value="52602">Interkulturelle Kommunikation  [M_IntKomm] (KG)</option>
+
+<option class="selectListLevel1" value="52278">Investitionsrechnung [M_INVEST] (WING)</option>
+
+<option class="selectListLevel1" value="51599">Italienisch 2 [M_Ital2] (KG)</option>
+
+<option class="selectListLevel1" value="51616">Japanisch 1 [M_Jap1] (KG)</option>
+
+<option class="selectListLevel1" value="55740">Java f&#252;r C++ Programmierer [M_JavaC] (E)</option>
+
+<option class="selectListLevel1" value="52284">Kommunikation im Team (WING) [M_KOMMT] (KG)</option>
+
+<option class="selectListLevel1" value="52583">Kommunikation im Team und zwischen Kulturen [M_KoTeKu] (KG)</option>
+
+<option class="selectListLevel1" value="52196">Konstruktion 1 (EEU) [M_Kons1EU] (EEU)</option>
+
+<option class="selectListLevel1" value="52070">Konstruktion 2 [M_Kons2] (B)</option>
+
+<option class="selectListLevel1" value="52073">Konstruktion 4 [M_Konstr4] (B)</option>
+
+<option class="selectListLevel1" value="52581">Kulturgeschichte: Architektur- und Stadtbaugeschichte [M_KgsArch] (KG)</option>
+
+<option class="selectListLevel1" value="52805">Kunststofftechnik 2 [M_KT2] (M)</option>
+
+<option class="selectListLevel1" value="52774">Kunststofftechnik 3 [M_KT3] (M)</option>
+
+<option class="selectListLevel1" value="52517">Land- und Waldwirtschaft [M_LaWi] (L)</option>
+
+<option class="selectListLevel1" value="55654">Landschaft und Gesellschaft [M_LG] (L)</option>
+
+<option class="selectListLevel1" value="52534">Landschaftsgestaltung 2 [M_LaGes2] (L)</option>
+
+<option class="selectListLevel1" value="52558">Landschafts&#246;kologie 1a [M_L&#214;1a] (L)</option>
+
+<option class="selectListLevel1" value="52561">Landschafts&#246;kologie 1b [M_L&#214;1b] (L)</option>
+
+<option class="selectListLevel1" value="52550">Landschafts&#246;kologie 3 [M_L&#214;K3] (L)</option>
+
+<option class="selectListLevel1" value="52539">Landschaftspflege [M_LaP] (L)</option>
+
+<option class="selectListLevel1" value="52573">Landschaftsplanung 2 [M_Lp2] (L)</option>
+
+<option class="selectListLevel1" value="52577">Landschaftsplanung 4 [M_Lp4] (L)</option>
+
+<option class="selectListLevel1" value="52384">Leistungselektronik [M_LeistEl] (E)</option>
+
+<option class="selectListLevel1" value="51607">Lerntechnik [M_LTec] (KG)</option>
+
+<option class="selectListLevel1" value="52056">Lineare Algebra (2 ECTS-Punkte) [M_LinAlg2EC] (MN)</option>
+
+<option class="selectListLevel1" value="52432">Lineare Algebra: Einf&#252;hrung [M_LinAlg] (MN)</option>
+
+<option class="selectListLevel1" value="52156">Luftreinhaltung [M_Luft] (EEU)</option>
+
+<option class="selectListLevel1" value="54337">Machine Learning [M_ML] (E)</option>
+
+<option class="selectListLevel1" value="52276">Marketing und Sales [M_MARKT] (WING)</option>
+
+<option class="selectListLevel1" value="55627">Materialaufbau [M_MatAuf] (MN)</option>
+
+<option class="selectListLevel1" value="52064">Materialtechnologie (B) [M_MaTechB] (B)</option>
+
+<option class="selectListLevel1" value="52185">Materialtechnologie 1 (EEU) [M_MatT1EU] (EEU)</option>
+
+<option class="selectListLevel1" value="52710">Materialtechnologie 1 [M_MaTecM1] (M)</option>
+
+<option class="selectListLevel1" value="52330">Mathematik 1 [M_MATH1] (MN)</option>
+
+<option class="selectListLevel1" value="52790">Mechatronik 1 [M_Mtronik1] (M)</option>
+
+<option class="selectListLevel1" value="52174">Mess-/Antriebs-/Regeltechnik 3 [M_MAR3] (EEU)</option>
+
+<option class="selectListLevel1" value="51714">Mobile and GUI Engineering [M_MGE] (I)</option>
+
+<option class="selectListLevel1" value="55825">Modellbildung und Simulation [U_SIMUL] (WING)</option>
+
+<option class="selectListLevel1" value="52125">Modellierungen Bauingenieurwesen [M_ModBau] (B)</option>
+
+<option class="selectListLevel1" value="55656">Nachhaltige Entwicklung - Blended Learning [M_NaEntw_e] (R)</option>
+
+<option class="selectListLevel1" value="52344">Nachrichtentechnik 1 [M_NaT1] (E)</option>
+
+<option class="selectListLevel1" value="52657">Natur und Landschaft 1 [M_NL1] (R)</option>
+
+<option class="selectListLevel1" value="52548">Naturnaher Tourismus [M_NT] (L)</option>
+
+<option class="selectListLevel1" value="52826">Naturwissenschaftliches Praktikum [M_NAP] (MN)</option>
+
+<option class="selectListLevel1" value="51712">Objektorientierte Programmierung [M_OO] (I)</option>
+
+<option class="selectListLevel1" value="52669">&#214;kologie 1 [M_&#214;ko1] (R)</option>
+
+<option class="selectListLevel1" value="52674">&#214;kologie 3 [M_&#214;ko3] (R)</option>
+
+<option class="selectListLevel1" value="52687">&#214;konomie in der Raumplanung [M_OekonoR] (R)</option>
+
+<option class="selectListLevel1" value="52364">OO-Analyse und -Design [M_OOAD] (E)</option>
+
+<option class="selectListLevel1" value="51603">Pers&#246;nliche Lernplanung [M_PersLP] (KG)</option>
+
+<option class="selectListLevel1" value="52486">Pflanzenkenntnisse 1 [M_PK1] (L)</option>
+
+<option class="selectListLevel1" value="52334">Physik 1 (WING) [M_PHYS1] (MN)</option>
+
+<option class="selectListLevel1" value="51986">Physik 1 [M_Ph1Mech] (MN)</option>
+
+<option class="selectListLevel1" value="52039">Physik 3 [M_Ph3SWO] (MN)</option>
+
+<option class="selectListLevel1" value="52623">Planungsgrundlagen 1 / Verkehr 1 [M_PG1VK1] (R)</option>
+
+<option class="selectListLevel1" value="52640">Planungsgrundlagen 2 [M_PG2] (R)</option>
+
+<option class="selectListLevel1" value="54024">Planungsinstrumente und Methodik 1 [M_PIM1] (R)</option>
+
+<option class="selectListLevel1" value="52629">Planungsinstrumente und Methodik 2 [M_PIM2] (R)</option>
+
+<option class="selectListLevel1" value="52663">Planungsinstrumente und Methodik 5 [M_PIM5] (R)</option>
+
+<option class="selectListLevel1" value="52631">Planungsinstrumente und Methodik 6 [M_PIM6] (R)</option>
+
+<option class="selectListLevel1" value="52288">Potenzialfindung - Industrieprojekt Teil 1 [M_POTFIND] (WING)</option>
+
+<option class="selectListLevel1" value="52206">Programmieren (EEU) [M_ProgEU] (EEU)</option>
+
+<option class="selectListLevel1" value="52396">Programmieren in C [M_ProgC] (E)</option>
+
+<option class="selectListLevel1" value="51640">Projekt- und Qualit&#228;tsmanagement [M_PmQm] (I)</option>
+
+<option class="selectListLevel1" value="52316">Projektmanagement (WING) [M_PROJ] (WING)</option>
+
+<option class="selectListLevel1" value="52585">Recht 1 und Kulturgeschichte [M_ReKgs] (KG)</option>
+
+<option class="selectListLevel1" value="52051">Recht 2 [M_RE2] (KG)</option>
+
+<option class="selectListLevel1" value="52352">Regelungstechnik 1 [M_RegT1] (E)</option>
+
+<option class="selectListLevel1" value="52386">Regelungstechnik 3 [M_RegT3] (E)</option>
+
+<option class="selectListLevel1" value="53448">Regelungstechnik und Automation [M_AUTOM] (WING)</option>
+
+<option class="selectListLevel1" value="55530">Regionalpolitik [M_REStaP] (KG)</option>
+
+<option class="selectListLevel1" value="52536">Renaturierung und &#246;kologische Aufwertung [M_Renat] (L)</option>
+
+<option class="selectListLevel1" value="51634">Rhetorische Kommunikation f&#252;r IngenieurInnen [M_RKI] (KG)</option>
+
+<option class="selectListLevel1" value="52588">Rhetorische Kommunikation f&#252;r PlanerInnen [M_RheKo] (KG)</option>
+
+<option class="selectListLevel1" value="52810">Robotik [M_Rob] (M)</option>
+
+<option class="selectListLevel1" value="52428">Sensorik 1 [M_Sens1] (E)</option>
+
+<option class="selectListLevel1" value="52814">Serie- und Anlagenbau [M_SeAnBau] (M)</option>
+
+<option class="selectListLevel1" value="52346">Signale und Systeme 1 [M_SigSys1] (E)</option>
+
+<option class="selectListLevel1" value="51642">Software-Engineering 1 [M_SE1] (I)</option>
+
+<option class="selectListLevel1" value="51601">Spanisch 2 [M_Span2] (KG)</option>
+
+<option class="selectListLevel1" value="52648">St&#228;dtebau 1 [M_St1] (R)</option>
+
+<option class="selectListLevel1" value="52678">St&#228;dtebau 4 / Freiraumplanung 2 [M_St4Fp2] (R)</option>
+
+<option class="selectListLevel1" value="52680">St&#228;dtebau 6 / Freiraumplanung 4 [M_St6Fp4] (R)</option>
+
+<option class="selectListLevel1" value="52136">Studienarbeit EEU [M_SAEU] (EEU)</option>
+
+<option class="selectListLevel1" value="52424">Studienarbeit Elektrotechnik [M_SAE] (E)</option>
+
+<option class="selectListLevel1" value="51673">Studienarbeit Informatik [M_SAI] (I)</option>
+
+<option class="selectListLevel1" value="52762">Studienarbeit Maschinentechnik [M_SAM] (M)</option>
+
+<option class="selectListLevel1" value="51650">System Modeling and Simulation [M_SMS] (I)</option>
+
+<option class="selectListLevel1" value="52274">Systemdenken und Systemdynamik 1 [M_SYSDYN1] (WING)</option>
+
+<option class="selectListLevel1" value="52204">Technische Mechanik  [M_TeMeEU] (EEU)</option>
+
+<option class="selectListLevel1" value="52737">Technische Mechanik 2 [M_TechM2] (M)</option>
+
+<option class="selectListLevel1" value="55629">Technische Physik [M_PhysTech] (MN)</option>
+
+<option class="selectListLevel1" value="52292">Technischer Entwurf - Industrieprojekt Teil 3 [M_TECHENTW] (WING)</option>
+
+<option class="selectListLevel1" value="52140">Thermische Solartechnik 1 [M_ThSolT1] (EEU)</option>
+
+<option class="selectListLevel1" value="52187">Thermo- und Fluiddynamik 1 (EEU) [M_TFD1EU] (EEU)</option>
+
+<option class="selectListLevel1" value="52796">Thermo- und Fluiddynamik 1 (M-I) [M_TFD1MI] (M)</option>
+
+<option class="selectListLevel1" value="52189">Umwelt und Ressourcen (EEU) [M_UmRes] (EEU)</option>
+
+<option class="selectListLevel1" value="52033">Umweltingenieurwesen 1 [M_Umwelt1] (B)</option>
+
+<option class="selectListLevel1" value="52164">Umwelt&#246;konomie [M_Um&#214;k] (EEU)</option>
+
+<option class="selectListLevel1" value="52478">Unternehmensf&#252;hrung 2 (Profil) [M_UF2] (L)</option>
+
+<option class="selectListLevel1" value="52509">Unternehmensf&#252;hrung 3 [M_UF3] (L)</option>
+
+<option class="selectListLevel1" value="52045">Vektorgeometrie (Bauingenieurwesen) [M_VekGB] (MN)</option>
+
+<option class="selectListLevel1" value="52238">Vektorgeometrie (EEU) [M_VekGEU] (MN)</option>
+
+<option class="selectListLevel1" value="52697">Vektorgeometrie (M-I) [M_VekGM] (MN)</option>
+
+<option class="selectListLevel1" value="52194">Verfahrenstechnik 1 [M_VT1] (EEU)</option>
+
+<option class="selectListLevel1" value="52635">Verkehr  und CAD [M_VKCAD] (R)</option>
+
+<option class="selectListLevel1" value="52615">Verkehr 3 [M_VK3] (R)</option>
+
+<option class="selectListLevel1" value="52621">Verkehr 5 [M_VK5] (R)</option>
+
+<option class="selectListLevel1" value="52091">Verkehr und Ressourcen3, TripelBudgetierung – Blended Learning  [M_VkR3TB_e] (B)</option>
+
+<option class="selectListLevel1" value="52085">Verkehr und Ressourcenmanagement 1 (B) [M_VkRes1B] (B)</option>
+
+<option class="selectListLevel1" value="52760">Virtuelles Entwickeln 3 [M_VE3] (M)</option>
+
+<option class="selectListLevel1" value="52786">Virtuelles Entwickeln 5 [M_VE5] (M)</option>
+
+<option class="selectListLevel1" value="52488">Visuelle Kommunikation 1 [M_VisKom1] (L)</option>
+
+<option class="selectListLevel1" value="52494">Visuelle Kommunikation 3 [M_VisKom3] (L)</option>
+
+<option class="selectListLevel1" value="52693">Wahrscheinlichkeitsrechnung (M-I) [M_WRechM] (MN)</option>
+
+<option class="selectListLevel1" value="52248">Wahrscheinlichkeitsrechnung und Statistik (EEU) [M_WrStatEU] (MN)</option>
+
+<option class="selectListLevel1" value="52062">Wahrscheinlichkeitsrechnung und Statistik [M_WrStat] (MN)</option>
+
+<option class="selectListLevel1" value="52098">Wasser 1 [M_Wasser1] (B)</option>
+
+<option class="selectListLevel1" value="52100">Wasser 3 [M_Wasser3] (B)</option>
+
+<option class="selectListLevel1" value="52148">Wasseraufbereitung 1 [M_WaBe1] (EEU)</option>
+
+<option class="selectListLevel1" value="51695">Web Engineering + Design 2 [M_WED2] (I)</option>
+
+<option class="selectListLevel1" value="52340">Wechsel- und Drehstromtechnik [M_WS_DST] (E)</option>
+
+<option class="selectListLevel1" value="53452">Werkstoffe (WING) [M_WERSTW] (WING)</option>
+
+<option class="selectListLevel1" value="52416">Wireless Communications 1 [M_WsComm1] (E)</option>
+
+</select>
+						</div>
+					</div>
+</form>
+
+
+		<div>
+				<a href="http://unterricht.hsr.ch/stundenplaene/">Weitere Stundenpläne</a>
+							<a href="https://raumverwaltung.hsr.ch">Raumbelegungspläne</a>
+		</div>
+        <br />
+
+                </td>
+                <td id="mainContent">
+                    <div id="messages">
+                            <div id="errorPane" class="noprint" style="display: none;">
+    </div>
+
+    <div id="warningPane" class="noprint" style="display: none;">
+    </div>
+
+    <div id="hintPane" class="noprint" style="display: none;">
+    </div>
+
+    <div id="timeslotPane" class="noprint" style="display: none;">
+    </div>
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+<div class="printOnly">
+	<span class="printTitle">Stundenplan HS 2015/2016 Zimmermann, Raphael (5011205)</span>
+	<span class="printDate">26.09.2015 13:45:10</span>
+</div>
+<table id="timeTable" class="adunisTable" style="" data-showLocation="False">
+	<tr>
+		<th style="min-width: 30px; height: 30px;" />
+			<th width="20%">
+				Montag
+			</th>
+			<th width="20%">
+				Dienstag
+			</th>
+			<th width="20%">
+				Mittwoch
+			</th>
+			<th width="20%">
+				Donnerstag
+			</th>
+			<th width="20%">
+				Freitag
+			</th>
+	</tr>
+        <tr id="Unit2">
+			<th>
+07:05-07:50			</th>
+                <td class="Mon">
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                </td>
+                <td class="Thu">
+                </td>
+                <td class="Fri">
+                </td>
+		</tr>
+        <tr id="Unit3">
+			<th>
+08:10-08:55			</th>
+                <td class="Mon">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Informations- und Codierungstheorie</b><br/>Vorlesung<br/><br/>Modul<ul><li>Informations- und Codierungstheorie [M_ICTh] (I)</li></ul><br />Dozenten<ul><li>Rinkel, Andreas (RIN)</li><li>Steffen, Andreas (SFF)</li></ul><br />Räume<ul><li>3.008</li></ul>"
+                                 spbid="314996"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51665&semId=772' >ICTh-v1</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51665%3B51666%3B53152&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51665%3B51666%3B53152&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/23326_M_ICTh.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=75&semId=772' >RIN </a><a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=5021&semId=772' >SFF </a>                                </span>
+                                <br />
+                                <span>
+                                    3.008
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                </td>
+                <td class="Thu">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Betriebssysteme 1 </b><br/>Vorlesung<br/><br/>Modul<ul><li>Betriebssysteme 1 [M_Bsys1] (I)</li></ul><br />Dozenten<ul><li>Glatz, Eduard (GLE)</li></ul><br />Räume<ul><li>3.008</li></ul>"
+                                 spbid="315088"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51669&semId=772' >Bsys1-v1</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51669%3B51670%3B53101&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51669%3B51670%3B53101&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/23472_M_Bsys1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=80&semId=772' >GLE </a>                                </span>
+                                <br />
+                                <span>
+                                    3.008
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Fri">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Informations- und Codierungstheorie</b><br/>Praktikum<br/><br/>Modul<ul><li>Informations- und Codierungstheorie [M_ICTh] (I)</li></ul><br />Dozenten<ul><li>Rinkel, Andreas (RIN)</li><li>Steffen, Andreas (SFF)</li></ul><br />Räume<ul><li>1.219</li></ul>"
+                                 spbid="315004"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51665&semId=772' >ICTh-p14</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51665%3B51666%3B55843&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51665%3B51666%3B55843&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/23326_M_ICTh.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=75&semId=772' >RIN </a><a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=5021&semId=772' >SFF </a>                                </span>
+                                <br />
+                                <span>
+                                    1.219
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+		</tr>
+        <tr id="Unit4">
+			<th>
+09:05-09:50			</th>
+                <td class="Mon">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Informations- und Codierungstheorie</b><br/>Vorlesung<br/><br/>Modul<ul><li>Informations- und Codierungstheorie [M_ICTh] (I)</li></ul><br />Dozenten<ul><li>Rinkel, Andreas (RIN)</li><li>Steffen, Andreas (SFF)</li></ul><br />Räume<ul><li>3.008</li></ul>"
+                                 spbid="314997"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51665&semId=772' >ICTh-v1</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51665%3B51666%3B53152&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51665%3B51666%3B53152&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/23326_M_ICTh.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=75&semId=772' >RIN </a><a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=5021&semId=772' >SFF </a>                                </span>
+                                <br />
+                                <span>
+                                    3.008
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                </td>
+                <td class="Thu">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Betriebssysteme 1 </b><br/>Vorlesung<br/><br/>Modul<ul><li>Betriebssysteme 1 [M_Bsys1] (I)</li></ul><br />Dozenten<ul><li>Glatz, Eduard (GLE)</li></ul><br />Räume<ul><li>3.008</li></ul>"
+                                 spbid="315089"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51669&semId=772' >Bsys1-v1</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51669%3B51670%3B53101&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51669%3B51670%3B53101&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/23472_M_Bsys1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=80&semId=772' >GLE </a>                                </span>
+                                <br />
+                                <span>
+                                    3.008
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Fri">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Informations- und Codierungstheorie</b><br/>Praktikum<br/><br/>Modul<ul><li>Informations- und Codierungstheorie [M_ICTh] (I)</li></ul><br />Dozenten<ul><li>Rinkel, Andreas (RIN)</li><li>Steffen, Andreas (SFF)</li></ul><br />Räume<ul><li>1.219</li></ul>"
+                                 spbid="315005"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51665&semId=772' >ICTh-p14</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51665%3B51666%3B55843&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51665%3B51666%3B55843&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/23326_M_ICTh.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=75&semId=772' >RIN </a><a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=5021&semId=772' >SFF </a>                                </span>
+                                <br />
+                                <span>
+                                    1.219
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+		</tr>
+        <tr id="Unit5">
+			<th>
+10:10-10:55			</th>
+                <td class="Mon">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Computernetze 1 </b><br/>Vorlesung<br/><br/>Modul<ul><li>Computernetze 1 [M_CN1] (I)</li></ul><br />Dozenten<ul><li>Heinzmann, Peter (HEI)</li></ul><br />Räume<ul><li>3.008</li></ul>"
+                                 spbid="315505"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51703&semId=772' >CN1-v1</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51703%3B51704%3B53127&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51703%3B51704%3B53127&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24413_M_CN1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=177&semId=772' >HEI </a>                                </span>
+                                <br />
+                                <span>
+                                    3.008
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Tue">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>OO Programmieren mit Java</b><br/>Vorlesung<br/><br/>Modul<ul><li>Objektorientierte Programmierung [M_OO] (I)</li></ul><br />Dozenten<ul><li>Bläser, Luc (BLL)</li></ul><br />Räume<ul><li>3.008</li></ul>"
+                                 spbid="315574"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51712&semId=772' >OO-v1</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51712%3B51713%3B53166&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51712%3B51713%3B53166&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24499_M_OO.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=17494&semId=772' >BLL </a>                                </span>
+                                <br />
+                                <span>
+                                    3.008
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Wed">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Diskrete Mathematik für Informatik </b><br/>Vorlesung<br/><br/>Modul<ul><li>Diskrete Mathematik für Informatik  [M_DMI] (MN)</li></ul><br />Dozenten<ul><li>Tietje, Olaf (TIE)</li></ul><br />Räume<ul><li>1.279</li></ul>"
+                                 spbid="315556"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51591&semId=772' >DMI-v2</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51591%3B51592%3B54642&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51591%3B51592%3B54642&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24442_M_DMI.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=14260&semId=772' >TIE </a>                                </span>
+                                <br />
+                                <span>
+                                    1.279
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Thu">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>OO Programmieren mit Java</b><br/>Übung<br/><br/>Modul<ul><li>Objektorientierte Programmierung [M_OO] (I)</li></ul><br />Dozenten<ul><li>Schumacher, Carmelo (SCC)</li></ul><br />Räume<ul><li>1.212</li></ul>"
+                                 spbid="315586"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51712&semId=772' >OO-u14</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51712%3B51713%3B53174&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51712%3B51713%3B53174&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24499_M_OO.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=22665&semId=772' >SCC </a>                                </span>
+                                <br />
+                                <span>
+                                    1.212
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Fri">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Betriebssysteme 1 </b><br/>Übung<br/><br/>Modul<ul><li>Betriebssysteme 1 [M_Bsys1] (I)</li></ul><br />Dozenten<ul><li>Glatz, Eduard (GLE)</li></ul><br />Räume<ul><li>1.255</li></ul>"
+                                 spbid="315096"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51669&semId=772' >Bsys1-u14</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51669%3B51670%3B53105&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51669%3B51670%3B53105&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/23472_M_Bsys1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=80&semId=772' >GLE </a>                                </span>
+                                <br />
+                                <span>
+                                    1.255
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+		</tr>
+        <tr id="Unit6">
+			<th>
+11:05-11:50			</th>
+                <td class="Mon">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Computernetze 1 </b><br/>Vorlesung<br/><br/>Modul<ul><li>Computernetze 1 [M_CN1] (I)</li></ul><br />Dozenten<ul><li>Heinzmann, Peter (HEI)</li></ul><br />Räume<ul><li>3.008</li></ul>"
+                                 spbid="315506"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51703&semId=772' >CN1-v1</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51703%3B51704%3B53127&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51703%3B51704%3B53127&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24413_M_CN1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=177&semId=772' >HEI </a>                                </span>
+                                <br />
+                                <span>
+                                    3.008
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Tue">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>OO Programmieren mit Java</b><br/>Vorlesung<br/><br/>Modul<ul><li>Objektorientierte Programmierung [M_OO] (I)</li></ul><br />Dozenten<ul><li>Bläser, Luc (BLL)</li></ul><br />Räume<ul><li>3.008</li></ul>"
+                                 spbid="315575"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51712&semId=772' >OO-v1</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51712%3B51713%3B53166&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51712%3B51713%3B53166&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24499_M_OO.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=17494&semId=772' >BLL </a>                                </span>
+                                <br />
+                                <span>
+                                    3.008
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Wed">
+                </td>
+                <td class="Thu">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>OO Programmieren mit Java</b><br/>Übung<br/><br/>Modul<ul><li>Objektorientierte Programmierung [M_OO] (I)</li></ul><br />Dozenten<ul><li>Schumacher, Carmelo (SCC)</li></ul><br />Räume<ul><li>1.212</li></ul>"
+                                 spbid="315587"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51712&semId=772' >OO-u14</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51712%3B51713%3B53174&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51712%3B51713%3B53174&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24499_M_OO.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=22665&semId=772' >SCC </a>                                </span>
+                                <br />
+                                <span>
+                                    1.212
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Fri">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Betriebssysteme 1 </b><br/>Übung<br/><br/>Modul<ul><li>Betriebssysteme 1 [M_Bsys1] (I)</li></ul><br />Dozenten<ul><li>Glatz, Eduard (GLE)</li></ul><br />Räume<ul><li>1.255</li></ul>"
+                                 spbid="315097"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51669&semId=772' >Bsys1-u14</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51669%3B51670%3B53105&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51669%3B51670%3B53105&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/23472_M_Bsys1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=80&semId=772' >GLE </a>                                </span>
+                                <br />
+                                <span>
+                                    1.255
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+		</tr>
+        <tr id="Unit7">
+			<th>
+12:10-12:55			</th>
+                <td class="Mon">
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>OO Programmieren mit Java</b><br/>Vorlesung<br/><br/>Modul<ul><li>Objektorientierte Programmierung [M_OO] (I)</li></ul><br />Dozenten<ul><li>Bläser, Luc (BLL)</li></ul><br />Räume<ul><li>3.010</li></ul>"
+                                 spbid="315576"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51712&semId=772' >OO-v1</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51712%3B51713%3B53166&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51712%3B51713%3B53166&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24499_M_OO.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=17494&semId=772' >BLL </a>                                </span>
+                                <br />
+                                <span>
+                                    3.010
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Thu">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>OO Programmieren mit Java</b><br/>Übung<br/><br/>Modul<ul><li>Objektorientierte Programmierung [M_OO] (I)</li></ul><br />Dozenten<ul><li>Schumacher, Carmelo (SCC)</li></ul><br />Räume<ul><li>1.212</li></ul>"
+                                 spbid="315588"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51712&semId=772' >OO-u14</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51712%3B51713%3B53174&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51712%3B51713%3B53174&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24499_M_OO.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=22665&semId=772' >SCC </a>                                </span>
+                                <br />
+                                <span>
+                                    1.212
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Fri">
+                </td>
+		</tr>
+        <tr id="Unit8">
+			<th>
+13:10-13:55			</th>
+                <td class="Mon">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Analysis 1 für Informatiker </b><br/>Vorlesung<br/><br/>Modul<ul><li>Analysis 1 für Informatiker [M_An1I] (MN)</li></ul><br />Dozenten<ul><li>Augenstein, Oliver (AUG)</li></ul><br />Räume<ul><li>1.217</li></ul>"
+                                 spbid="374203"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51585&semId=772' >An1I-v2</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51585%3B51586%3B54532&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51585%3B51586%3B54532&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24395_M_An1I.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=15755&semId=772' >AUG </a>                                </span>
+                                <br />
+                                <span>
+                                    1.217
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Analysis 1 für Informatiker </b><br/>Vorlesung<br/><br/>Modul<ul><li>Analysis 1 für Informatiker [M_An1I] (MN)</li></ul><br />Dozenten<ul><li>Augenstein, Oliver (AUG)</li></ul><br />Räume<ul><li>1.205</li></ul>"
+                                 spbid="315485"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51585&semId=772' >An1I-v2</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51585%3B51586%3B54532&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51585%3B51586%3B54532&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24395_M_An1I.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=15755&semId=772' >AUG </a>                                </span>
+                                <br />
+                                <span>
+                                    1.205
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Thu">
+                </td>
+                <td class="Fri">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Datenbanksysteme 1</b><br/>Übung<br/><br/>Modul<ul><li>Datenbanksysteme 1 [M_Dbs1] (I)</li></ul><br />Dozenten<ul><li>Keller, Stefan F. (KES)</li></ul><br />Räume<ul><li>1.208</li></ul>"
+                                 spbid="314516"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51648&semId=772' >Dbs1-u21</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51648%3B51649%3B55840&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51648%3B51649%3B55840&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/20813_M_Dbs1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=131&semId=772' >KES </a>                                </span>
+                                <br />
+                                <span>
+                                    1.208
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+		</tr>
+        <tr id="Unit9">
+			<th>
+14:05-14:50			</th>
+                <td class="Mon">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Analysis 1 für Informatiker </b><br/>Vorlesung<br/><br/>Modul<ul><li>Analysis 1 für Informatiker [M_An1I] (MN)</li></ul><br />Dozenten<ul><li>Augenstein, Oliver (AUG)</li></ul><br />Räume<ul><li>1.217</li></ul>"
+                                 spbid="315484"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51585&semId=772' >An1I-v2</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51585%3B51586%3B54532&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51585%3B51586%3B54532&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24395_M_An1I.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=15755&semId=772' >AUG </a>                                </span>
+                                <br />
+                                <span>
+                                    1.217
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Tue">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Diskrete Mathematik für Informatik </b><br/>Übung<br/><br/>Modul<ul><li>Diskrete Mathematik für Informatik  [M_DMI] (MN)</li></ul><br />Dozenten<ul><li>Tietje, Olaf (TIE)</li></ul><br />Räume<ul><li>1.277</li></ul>"
+                                 spbid="315563"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51591&semId=772' >DMI-u22</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51591%3B51592%3B54644&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51591%3B51592%3B54644&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24442_M_DMI.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=14260&semId=772' >TIE </a>                                </span>
+                                <br />
+                                <span>
+                                    1.277
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Wed">
+                </td>
+                <td class="Thu">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Computernetze 1 Praktikum </b><br/>Praktikum<br/><br/>Modul<ul><li>Computernetze 1 [M_CN1] (I)</li></ul><br />Dozenten<ul><li>Heinzmann, Peter (HEI)</li><li>Widmer, Peter (WIP)</li></ul><br />Räume<ul><li>2.103</li></ul><br />Kommentar<ul><li>KW 39,41,43,45,47,49,51</li></ul>"
+                                 spbid="315531"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51703&semId=772' >CN1Prak-p4</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51703%3B51705%3B53138&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51703%3B51705%3B53138&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24413_M_CN1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=177&semId=772' >HEI </a><a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=17812&semId=772' >WIP </a>                                </span>
+                                <br />
+                                <span>
+                                    2.103
+                                </span>
+                                <br />
+                                <span>
+                                    KW 39,41,43,45,47,49,51
+                                </span>
+                            </div>
+                </td>
+                <td class="Fri">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Datenbanksysteme 1</b><br/>Übung<br/><br/>Modul<ul><li>Datenbanksysteme 1 [M_Dbs1] (I)</li></ul><br />Dozenten<ul><li>Keller, Stefan F. (KES)</li></ul><br />Räume<ul><li>1.208</li></ul>"
+                                 spbid="314517"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51648&semId=772' >Dbs1-u21</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51648%3B51649%3B55840&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51648%3B51649%3B55840&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/20813_M_Dbs1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=131&semId=772' >KES </a>                                </span>
+                                <br />
+                                <span>
+                                    1.208
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+		</tr>
+        <tr id="Unit10">
+			<th>
+15:10-15:55			</th>
+                <td class="Mon">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Diskrete Mathematik für Informatik </b><br/>Vorlesung<br/><br/>Modul<ul><li>Diskrete Mathematik für Informatik  [M_DMI] (MN)</li></ul><br />Dozenten<ul><li>Tietje, Olaf (TIE)</li></ul><br />Räume<ul><li>1.277</li></ul>"
+                                 spbid="315554"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51591&semId=772' >DMI-v2</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51591%3B51592%3B54642&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51591%3B51592%3B54642&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24442_M_DMI.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=14260&semId=772' >TIE </a>                                </span>
+                                <br />
+                                <span>
+                                    1.277
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Tue">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Analysis 1 für Informatiker </b><br/>Übung<br/><br/>Modul<ul><li>Analysis 1 für Informatiker [M_An1I] (MN)</li></ul><br />Dozenten<ul><li>Augenstein, Oliver (AUG)</li></ul><br />Räume<ul><li>1.271</li></ul>"
+                                 spbid="315492"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51585&semId=772' >An1I-u22</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51585%3B51586%3B54534&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51585%3B51586%3B54534&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24395_M_An1I.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=15755&semId=772' >AUG </a>                                </span>
+                                <br />
+                                <span>
+                                    1.271
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Wed">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Datenbanksysteme 1</b><br/>Vorlesung<br/><br/>Modul<ul><li>Datenbanksysteme 1 [M_Dbs1] (I)</li></ul><br />Dozenten<ul><li>Keller, Stefan F. (KES)</li></ul><br />Räume<ul><li>5.002</li></ul>"
+                                 spbid="314508"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51648&semId=772' >Dbs1-v2</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51648%3B51649%3B55839&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51648%3B51649%3B55839&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/20813_M_Dbs1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=131&semId=772' >KES </a>                                </span>
+                                <br />
+                                <span>
+                                    5.002
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Thu">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Computernetze 1 Praktikum </b><br/>Praktikum<br/><br/>Modul<ul><li>Computernetze 1 [M_CN1] (I)</li></ul><br />Dozenten<ul><li>Heinzmann, Peter (HEI)</li><li>Widmer, Peter (WIP)</li></ul><br />Räume<ul><li>2.103</li></ul><br />Kommentar<ul><li>KW 39,41,43,45,47,49,51</li></ul>"
+                                 spbid="315532"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51703&semId=772' >CN1Prak-p4</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51703%3B51705%3B53138&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51703%3B51705%3B53138&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24413_M_CN1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=177&semId=772' >HEI </a><a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=17812&semId=772' >WIP </a>                                </span>
+                                <br />
+                                <span>
+                                    2.103
+                                </span>
+                                <br />
+                                <span>
+                                    KW 39,41,43,45,47,49,51
+                                </span>
+                            </div>
+                </td>
+                <td class="Fri">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Computernetze 1 </b><br/>Übung<br/><br/>Modul<ul><li>Computernetze 1 [M_CN1] (I)</li></ul><br />Dozenten<ul><li>Heinzmann, Peter (HEI)</li></ul><br />Räume<ul><li>1.212a</li></ul>"
+                                 spbid="315513"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51703&semId=772' >CN1-u14</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51703%3B51704%3B53140&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51703%3B51704%3B53140&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24413_M_CN1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=177&semId=772' >HEI </a>                                </span>
+                                <br />
+                                <span>
+                                    1.212a
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+		</tr>
+        <tr id="Unit11">
+			<th>
+16:05-16:50			</th>
+                <td class="Mon">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Diskrete Mathematik für Informatik </b><br/>Vorlesung<br/><br/>Modul<ul><li>Diskrete Mathematik für Informatik  [M_DMI] (MN)</li></ul><br />Dozenten<ul><li>Tietje, Olaf (TIE)</li></ul><br />Räume<ul><li>1.277</li></ul>"
+                                 spbid="315555"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51591&semId=772' >DMI-v2</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51591%3B51592%3B54642&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51591%3B51592%3B54642&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24442_M_DMI.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=14260&semId=772' >TIE </a>                                </span>
+                                <br />
+                                <span>
+                                    1.277
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Datenbanksysteme 1</b><br/>Vorlesung<br/><br/>Modul<ul><li>Datenbanksysteme 1 [M_Dbs1] (I)</li></ul><br />Dozenten<ul><li>Keller, Stefan F. (KES)</li></ul><br />Räume<ul><li>5.002</li></ul>"
+                                 spbid="314509"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51648&semId=772' >Dbs1-v2</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51648%3B51649%3B55839&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51648%3B51649%3B55839&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/20813_M_Dbs1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=131&semId=772' >KES </a>                                </span>
+                                <br />
+                                <span>
+                                    5.002
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+                <td class="Thu">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Computernetze 1 Praktikum </b><br/>Praktikum<br/><br/>Modul<ul><li>Computernetze 1 [M_CN1] (I)</li></ul><br />Dozenten<ul><li>Heinzmann, Peter (HEI)</li><li>Widmer, Peter (WIP)</li></ul><br />Räume<ul><li>2.103</li></ul><br />Kommentar<ul><li>KW 39,41,43,45,47,49,51</li></ul>"
+                                 spbid="315533"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51703&semId=772' >CN1Prak-p4</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51703%3B51705%3B53138&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51703%3B51705%3B53138&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24413_M_CN1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=177&semId=772' >HEI </a><a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=17812&semId=772' >WIP </a>                                </span>
+                                <br />
+                                <span>
+                                    2.103
+                                </span>
+                                <br />
+                                <span>
+                                    KW 39,41,43,45,47,49,51
+                                </span>
+                            </div>
+                </td>
+                <td class="Fri">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Computernetze 1 </b><br/>Übung<br/><br/>Modul<ul><li>Computernetze 1 [M_CN1] (I)</li></ul><br />Dozenten<ul><li>Heinzmann, Peter (HEI)</li></ul><br />Räume<ul><li>1.212a</li></ul>"
+                                 spbid="315514"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51703&semId=772' >CN1-u14</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51703%3B51704%3B53140&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51703%3B51704%3B53140&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24413_M_CN1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=177&semId=772' >HEI </a>                                </span>
+                                <br />
+                                <span>
+                                    1.212a
+                                </span>
+                                <br />
+                                <span>
+
+                                </span>
+                            </div>
+                </td>
+		</tr>
+        <tr id="Unit12">
+			<th>
+17:00-17:45			</th>
+                <td class="Mon">
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                </td>
+                <td class="Thu">
+                            <div class="timeTableBlock"
+                                 data-tooltip="<b>Computernetze 1 Praktikum </b><br/>Praktikum<br/><br/>Modul<ul><li>Computernetze 1 [M_CN1] (I)</li></ul><br />Dozenten<ul><li>Heinzmann, Peter (HEI)</li><li>Widmer, Peter (WIP)</li></ul><br />Räume<ul><li>2.103</li></ul><br />Kommentar<ul><li>KW 39,41,43,45,47,49,51</li></ul>"
+                                 spbid="315534"
+                                 timetableid="20ac249c-73ea-43e3-8bb9-7bce2de26996"
+                                 style="">
+
+                                <span class="blockShortName">
+                                    <a href='/MyStudy/TimeTable/Overview/Module/?modId=51703&semId=772' >CN1Prak-p4</a>
+                                </span>
+                                <span>
+
+                                </span>
+                                    <span class="timeTableIcons">
+                                            <a href="/CurrentSem/Reporting/ClassOverview/Module?kursElId=51703%3B51705%3B53138&amp;oeId=-1" title="Klassenspiegel"><img src="/Images/users32.png" alt="Klassenspiegel" class="timeTableIcon" /></a>
+                                            <a href="/CurrentSem/Reporting/Registrations/Module?kursElId=51703%3B51705%3B53138&amp;oeId=-1" title="Klassenliste"><img src="/Images/linedpaper32.png" alt="Klassenliste" class="timeTableIcon" /></a>
+                                        <a href="http://studien.hsr.ch/allModules/24413_M_CN1.html"
+                                           title="Modulbeschreibung"
+                                           target="_blank"><img src="/Images/paper32.png" alt="Modulbeschreibung" class="timeTableIcon" /></a>
+                                    </span>
+                                <br />
+                                <span>
+<a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=177&semId=772' >HEI </a><a href='/MyStudy/TimeTable/Overview/Teacher/?dozId=17812&semId=772' >WIP </a>                                </span>
+                                <br />
+                                <span>
+                                    2.103
+                                </span>
+                                <br />
+                                <span>
+                                    KW 39,41,43,45,47,49,51
+                                </span>
+                            </div>
+                </td>
+                <td class="Fri">
+                </td>
+		</tr>
+        <tr id="Unit13">
+			<th>
+17:55-18:40			</th>
+                <td class="Mon">
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                </td>
+                <td class="Thu">
+                </td>
+                <td class="Fri">
+                </td>
+		</tr>
+        <tr id="Unit14">
+			<th>
+19:10-19:55			</th>
+                <td class="Mon">
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                </td>
+                <td class="Thu">
+                </td>
+                <td class="Fri">
+                </td>
+		</tr>
+        <tr id="Unit15">
+			<th>
+20:05-20:50			</th>
+                <td class="Mon">
+                </td>
+                <td class="Tue">
+                </td>
+                <td class="Wed">
+                </td>
+                <td class="Thu">
+                </td>
+                <td class="Fri">
+                </td>
+		</tr>
+</table>
+<br />
+<div id="selfStudyTimeTable" style="width: 100%; display: none;">
+	<span style="font-weight: bold;">Kurse ohne definierte Wochenstunden (Blockunterricht,
+		Selbststudium, Exkursion, etc.)</span><br />
+	<table id="selfStudyContent" class="adunisTable">
+		<tr>
+			<th>
+				Kurs
+			</th>
+			<th>
+				Dozent
+			</th>
+			<th>
+				Raum
+			</th>
+			<th>
+				Kommentar
+			</th>
+		</tr>
+	</table>
+</div>
+
+                </td>
+                <td id="adminContent" class="noprint">
+<div>
+    <form id="loginInfo" action="/Application/LoginInfo" method="post">
+        <script language="javascript" type="text/javascript">
+            function loginInfoSubmit() {
+                $('#loginInfo').submit();
+            }
+        </script>
+        <table>
+            <tr>
+                <td style="width: 100%;">
+                    <span>Angemeldet:&nbsp;</span>
+                    rzimmerm
+                </td>
+                <td>
+                    <a class="adunisActionLink" href="/Application/Logout" >Abmelden</a>
+                </td>
+            </tr>
+                                </table>
+    </form>
+</div>
+
+</td>
+            </tr>
+            <tr class="noprint">
+                <td>
+                    </td>
+                    <td>
+
+    <div class="sitemapCol">    <span class="parent"><a href="/Info/Overview/Home" title="Home">Home</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/Info/Index" title="Start">Start</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/Settings/Global" title="Einstellungen">Einstellungen</a></nobr>
+                </li>
+    </ul>
+</div>
+    <div class="sitemapCol">    <span class="parent"><a href="/Info/Overview/Mein Studium Student" title="Mein Studium">Mein Studium</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/MyStudy/TimeTable/Overview" title="Stundenplan">Stundenplan</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/MyStudy/Exam/Overview/Me" title="Prüfungsplan">Prüfungsplan</a></nobr>
+                </li>
+    <span class="parent"><a href="/Info/Overview/Meine Leistungen" title="Meine Leistungen">Meine Leistungen</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/MyStudy/Reporting/TermReport" title="Semesterreport">Semesterreport</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/MyStudy/Reporting/StudentReport" title="Leistungsreport">Leistungsreport</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/MyStudy/Module/Booklet" title="Modulbeschreibungen">Modulbeschreibungen</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/MyStudy/Reporting/Statistic" title="Offene und bestandene Module">Offene und bestandene Module</a></nobr>
+                </li>
+    </ul>
+    <span class="parent"><a href="/Info/Overview/Informationen Student" title="Informationen">Informationen</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/MyStudy/Module/Description" title="Studiengang-/Modulinfo">Studiengang-/Modulinfo</a></nobr>
+                </li>
+    </ul>
+    <span class="parent"><a href="/Info/Overview/Administration Student" title="Administration">Administration</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/MyStudy/Reporting/Immatriculation" title="Immatrikulationsbestätigung">Immatrikulationsbestätigung</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/MyStudy/Forms/ChangeContactDetails" title="Adressänderung">Adressänderung</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/MyStudy/Forms/Leave" title="Austritt">Austritt</a></nobr>
+                </li>
+    </ul>
+    </ul>
+</div>
+    <div class="sitemapCol">    <span class="parent"><a href="/Info/Overview/Aktuelles Sem Tab Student" title="Aktuelles Semester">Aktuelles Semester</a></span>
+    <ul>
+    <span class="parent"><a href="/Info/Overview/Module Tab AktSem Student" title="Module">Module</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/CurrentSem/Module/Register" title="An-/Abmelden">An-/Abmelden</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/Reporting/ClassOverview/Module" title="Klassenspiegel">Klassenspiegel</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/Reporting/Registrations/Module" title="Klassenliste">Klassenliste</a></nobr>
+                </li>
+    </ul>
+    <span class="parent"><a href="/Info/Overview/Stundenplan Tab AktSem Student" title="Stundenplan">Stundenplan</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/CurrentSem/TimeTable/Register" title="Bearbeiten">Bearbeiten</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/TimeTable/Overview/Me" title="Mein Stundenplan">Mein Stundenplan</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/TimeTable/Overview/Student" title="Stundenplan Mitstudenten">Stundenplan Mitstudenten</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/TimeTable/Overview/Teacher" title="Stundenplan Dozenten">Stundenplan Dozenten</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/TimeTable/Overview/Module" title="Stundenplan Module">Stundenplan Module</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/TimeTable/CompareTimeTable" title="Stundenplan vergleichen">Stundenplan vergleichen</a></nobr>
+                </li>
+    </ul>
+    <span class="parent"><a href="/Info/Overview/Prüfung Tab AktSem Student" title="Prüfung">Prüfung</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/CurrentSem/Exam/Register" title="An-/Abmelden">An-/Abmelden</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/Exam/Overview/Me" title="Mein Prüfungsplan">Mein Prüfungsplan</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/Exam/Overview/Student" title="Prüfungsplan Mitstudenten">Prüfungsplan Mitstudenten</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/Exam/Overview/Teacher" title="Prüfungsplan Dozenten">Prüfungsplan Dozenten</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/CurrentSem/Exam/Overview/Exam" title="Prüfungsplan Module">Prüfungsplan Module</a></nobr>
+                </li>
+    </ul>
+    </ul>
+</div>
+    <div class="sitemapCol">    <span class="parent"><a href="/Info/Overview/Next Sem Tab Student" title="Nächstes Semester">Nächstes Semester</a></span>
+    <ul>
+    <span class="parent"><a href="/Info/Overview/Module Tab NextSem Student" title="Module">Module</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/NextSem/Module/Register" title="An-/Abmelden">An-/Abmelden</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/NextSem/Reporting/ClassOverview/Module" title="Klassenspiegel">Klassenspiegel</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/NextSem/Reporting/Registrations/Module" title="Klassenliste">Klassenliste</a></nobr>
+                </li>
+    </ul>
+    <span class="parent"><a href="/Info/Overview/Stundenplan Tab NextSem Student" title="Stundenplan">Stundenplan</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/NextSem/TimeTable/Register" title="Erstellen">Erstellen</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/NextSem/TimeTable/RegisterSample" title="Musterstundenplan anmelden">Musterstundenplan anmelden</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/NextSem/TimeTable/Overview/Me" title="Mein Stundenplan">Mein Stundenplan</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/NextSem/TimeTable/Overview/Student" title="Stundenplan Mitstudenten">Stundenplan Mitstudenten</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/NextSem/TimeTable/Overview/Teacher" title="Stundenplan Dozenten">Stundenplan Dozenten</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/NextSem/TimeTable/Overview/Module" title="Stundenplan Module">Stundenplan Module</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/NextSem/TimeTable/CompareTimeTable" title="Stundenplan vergleichen">Stundenplan vergleichen</a></nobr>
+                </li>
+    </ul>
+    </ul>
+</div>
+    <div class="sitemapCol">    <span class="parent"><a href="/Info/Overview/Hilfe Tab Student" title="Hilfe">Hilfe</a></span>
+    <ul>
+                <li>
+                    <nobr><a href="/Help/Student/Reports" title="Reports">Reports</a></nobr>
+                </li>
+                <li>
+                    <nobr><a href="/Help/Student/Registrations" title="Anmeldeprozesse">Anmeldeprozesse</a></nobr>
+                </li>
+    </ul>
+</div>
+
+                </td>
+                    <td>
+                    </td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        var Adunis = (function (Adunis) {
+
+            if (!Adunis.hasOwnProperty("PageInfo")) {
+                Adunis.PageInfo = {}
+            }
+
+            Adunis.PageInfo.allowedActions = ["MyStudy/TimeTable/Overview"];
+
+            return Adunis;
+
+        })(Adunis || {});
+
+        $(document).ready(function() {
+
+
+
+	 var viewModel = {};
+				 viewModel.OrgId = {
+				   resetProperties: {
+					      SemesterId: "-1",
+					      StandortId: "-1",
+					      StudentRollenId: "-1",
+					      DozentRollenId: "-1",
+					      ModulId: "-1",
+					      MusterstundenplanId: "-1",
+			       },
+                   exclusiveProperties: {
+				   },
+			       currentValue: "226",
+                   nullValue: "-1",
+				 }
+				 viewModel.SemesterId = {
+				   resetProperties: {
+			       },
+                   exclusiveProperties: {
+				   },
+			       currentValue: "772",
+                   nullValue: "-1",
+				 }
+				 viewModel.DozentRollenId = {
+				   resetProperties: {
+			       },
+                   exclusiveProperties: {
+					      StudentRollenId: "-1",
+					      ModulId: "-1",
+					      MusterstundenplanId: "-1",
+				   },
+			       currentValue: "-1",
+                   nullValue: "-1",
+				 }
+				 viewModel.ModulId = {
+				   resetProperties: {
+			       },
+                   exclusiveProperties: {
+					      DozentRollenId: "-1",
+					      StudentRollenId: "-1",
+					      MusterstundenplanId: "-1",
+				   },
+			       currentValue: "-1",
+                   nullValue: "-1",
+				 }
+
+	 $("#selection").adunisSelection(viewModel);
+            $(document).tooltip({
+                delay: 400,
+                content: function () {
+                    return $(this).attr('data-tooltip');
+                },
+                items: "[data-tooltip]"
+            });
+
+        });
+    </script>
+        <script src="/Scripts/JsModules/Selection.js" type="text/javascript"></script>
+</body>
+</html>
