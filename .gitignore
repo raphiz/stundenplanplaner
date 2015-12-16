@@ -1,2 +1,4 @@
 auth.cfg
-venv
+*.pyc
+modules.ics
+mocks.yaml

@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 
 HSR_BASE = "http://unterricht.hsr.ch/"
 MODULE_BASE = HSR_BASE + "NextSem/TimeTable/Overview/Module"
+AVAILABILITY_BASE = HSR_BASE + "/NextSem/TimeTableInteraction/GetRegistrationData/"
 DAYS_OF_THE_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 
@@ -84,20 +85,31 @@ def parse_timetable(raw):
 
     rows = table.findAll('tr')
     lessons = []
+    p = re.compile(ur'([A-Za-z0-9]+)-(v|u)([0-9])([0-9]?)')
+
     for cell in rows[1:]:
-        time = cell.th.string.strip()
+        time_str = cell.th.string.strip()
         for td in cell.select('td'):
             # Skip empty fields...
             for div in td.findAll('div'):
                 lesson = {}
-                lesson['day'] = td['class'][0]  # Day of the week
+                lesson['day'] = td['class'][0]
 
                 children = list(div.contents)
-                lesson['name'] = to_string(children[1])     # Modul name
+                lesson['name'] = to_string(children[1])
+                match = p.match(lesson['name'])
+                # Module Abbrev - can differ from the module id
+                lesson['abbrev'] = match.group(1)
+                lesson['type'] = match.group(2)
+                lesson['class'] = match.group(3)
+                lesson['team'] = match.group(4)
+
                 lesson['teacher'] = to_string(children[9])  # Dozent
                 lesson['room'] = to_string(children[13])    # Zimmer
                 lesson['weeks'] = to_string(children[17])   # KW 39,41,43,45,47,49,51
-                lesson['time'] = time
+                time_fragments = time_str.split('-')[0].split(':')
+                lesson['start_time'] = time(hour=int(time_fragments[0]),
+                                            minute=int(time_fragments[1]))
                 lessons.append(lesson)
     return lessons
 
@@ -115,11 +127,11 @@ def write_planner(lectures, filename):
         for lesson in lessons:
 
             event = Event()
-            time_fragments = lesson['time'].split('-')[0].split(':')
+
             start = reference + timedelta(
                 days=DAYS_OF_THE_WEEK.index(lesson['day']),
-                hours=int(time_fragments[0]),
-                minutes=int(time_fragments[1]))
+                hours=lesson['start_time'].hour,
+                minutes=lesson['start_time'].minute)
             end = start + timedelta(minutes=45)
 
             event.add('summary', "%s (%s) %s" % (lesson['name'], lesson['teacher'], lesson['weeks']))
@@ -133,13 +145,49 @@ def write_planner(lectures, filename):
         f.write(cal.to_ical())
 
 
+def append_availability(course, lessons):
+    pattern = re.compile(ur'Anzahl Teilnehmer: ([0-9]*) von maximal ([0-9]*)')
+    affected = [l for l in lessons if l['name'] == course['CourseTitle']]
+    for lesson in affected:
+        lesson['occupied'] = int(pattern.search(course['TreeToolTip']).group(1))
+        lesson['total'] = int(pattern.search(course['TreeToolTip']).group(2))
+        lesson['available'] = lesson['total']-lesson['occupied']
+        lesson['chance'] = 0.0
+        if lesson['total'] != 0:
+            lesson['chance'] = (float(lesson['available']))/float(lesson['total'])
+
+
+def parse_availability(lessons, json_data):
+    # TODO: make recursive!
+    if len(json_data['Data']['Courses']):
+        # Unknown!
+        return
+    for course in json_data['Data']['Courses'][0]['ChildCourseElement'][0]['ChildCourseElement']:
+        # Vorlesung
+        append_availability(course, lessons)
+
+        if (len(course['ChildCourseElement']) > 0):
+            for u in course['ChildCourseElement'][0]['ChildCourseElement']:
+                append_availability(u, lessons)
+    if len([l for l in lessons if 'chance' not in l.keys()]) > 0:
+        print("Warning: Could not evaluate availability for some Modules:")
+        print([l['name'] for l in lessons if 'chance' not in l.keys()])
+
+
+def lecturesTimes(session, my_modules, include_availability=False):
+    all_modules = module_list(session)
+    lectures = {}
+    headers = {'Referer': 'https://unterricht.hsr.ch/NextSem/TimeTable/Register'}
+    for module in my_modules:
+        timetable_url = MODULE_BASE + '?modId=' + all_modules[module]
+        lectures[module] = parse_timetable(session.get(timetable_url).text)
+        if include_availability:
+            av_url = AVAILABILITY_BASE + '?id=' + all_modules[module]
+            parse_availability(lectures[module], session.get(av_url, headers=headers).json())
+    return lectures
+
 if __name__ == "__main__":
     my_modules = ['AD1', 'An2I', 'AutoSpr', 'ExEv', 'InfSi1', 'KommIng2', 'LTec', 'RKI', 'WED1']
     (response, session) = signin()
-    all_modules = module_list(session)
-    lectures = {}
-    for module in my_modules:
-        url = MODULE_BASE + '?modId=' + all_modules[module]
-        lectures[module] = parse_timetable(session.get(url).text)
-
+    lectures = lecturesTimes(session, my_modules)
     write_planner(lectures, 'modules.ics')
