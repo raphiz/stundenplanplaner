@@ -2,3 +2,6 @@ auth.cfg
 *.pyc
 modules.ics
 mocks.yaml
+.cache
+legacy
+fixtures
