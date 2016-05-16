@@ -21,21 +21,32 @@ def test_signin_valid_credentials():
         assert len(response.text) > 100
 
 
-def test_all_modules_not_signed_in():
+def test_all_modules_ids_not_signed_in():
     source = AdUnisHSR()
 
     with pytest.raises(AuthenticationException) as exceptionInfo:
-        source.all_modules()
+        source.all_modules_ids()
 
     assert str(exceptionInfo.value) == "You must log in before you can query!"
 
 
-def test_all_modules_signed_in_happy_path():
+def test_all_modules_ids_signed_in_happy_path():
     source = AdUnisHSR()
 
-    with vcr.use_cassette('fixtures/test_all_modules_signed_in_happy_path.yaml'):
+    with vcr.use_cassette('fixtures/test_all_modules_ids_signed_in_happy_path.yaml'):
         username, password = utils.parse_user_credentials('auth.cfg')
         response = source.signin(username, password)
-        modules = source.all_modules()
+        modules = source.all_modules_ids()
         assert len(modules) > 20
         assert modules['InfSys'] == '51677'
+
+
+def test_lectures_times_happy_path():
+    source = AdUnisHSR()
+
+    with vcr.use_cassette('fixtures/test_lectures_times_happy_path.yaml'):
+        username, password = utils.parse_user_credentials('auth.cfg')
+        response = source.signin(username, password)
+        lectures_times = source.lectures_times(['AD1', 'InfSi1'])
+        print(lectures_times)
+        # TODO: verify!

@@ -48,7 +48,7 @@ class AdUnisHSR:
         self.signed_in = True
         return response
 
-    def all_modules(self):
+    def all_modules_ids(self):
         if not self.signed_in:
             raise AuthenticationException("You must log in before you can query!")
         modules = {}
@@ -60,13 +60,23 @@ class AdUnisHSR:
                 modules[m.group(1)] = option.get('value')
         return modules
 
-    #### BEGINLEGACY #######
-    def current_timetable(self):
-        response = self.session.get(self.MY_TIMETABLE)
-        return self._parse_timetable(response.text)
+    def lectures_times(self, modules, include_availability=False):
+        if not self.signed_in:
+            raise AuthenticationException("You must log in before you can query!")
 
-    def _to_string(self, element):
-        return ' '.join(list(element.stripped_strings))
+        modules_ids = self.all_modules_ids()
+        lectures = {}
+        headers = {'Referer': 'https://unterricht.hsr.ch/NextSem/TimeTable/Register'}
+
+        for module in modules:
+            # TODO: Change to NEXT!
+            timetable_url = self.MODULE_BASE_CURRENT + '?modId=' + modules_ids[module]
+            lectures[module] = self._parse_timetable(self.session.get(timetable_url).text)
+            # TODO: Test when available!
+            # if include_availability:
+            #     av_url = AVAILABILITY_BASE + '?id=' + modules_ids[module]
+            #     parse_availability(lectures[module], session.get(av_url, headers=headers).json())
+        return lectures
 
     def _parse_timetable(self, raw):
         soup = BeautifulSoup(raw, "lxml")
@@ -101,4 +111,6 @@ class AdUnisHSR:
                                                 minute=int(time_fragments[1]))
                     lessons.append(lesson)
         return lessons
-#### END #######
+
+    def _to_string(self, element):
+        return ' '.join(list(element.stripped_strings))
