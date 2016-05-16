@@ -15,13 +15,7 @@ def test_signin_invalid_credentials():
     with pytest.raises(AuthenticationException) as exceptionInfo:
         source.signin('user', 'password')
 
-    assert str(exceptionInfo.value) == "Authentication has failed (Status code was 401)!"
-
-
-@vcr.use_cassette
-def test_in_hsr_network():
-    source = AdUnisHSR()
-    assert source._in_HSR_network()
+    assert str(exceptionInfo.value)[:27] == "Authentication has failed ("
 
 
 @vcr.use_cassette

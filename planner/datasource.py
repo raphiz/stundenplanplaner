@@ -1,14 +1,17 @@
-from requests_ntlm import HttpNtlmAuth
-import requests
-from bs4 import BeautifulSoup
+from .exceptions import AuthenticationException
+
 import re
-from exceptions import AuthenticationException
 from datetime import datetime, date, time, timedelta
+
+import requests
+from requests_ntlm import HttpNtlmAuth
+from bs4 import BeautifulSoup
 
 
 class AdUnisHSR:
-
     HSR_BASE = "http://unterricht.hsr.ch/"
+    EXTERNAL_LOGIN_URL = ('https://adfs.hsr.ch/adfs/ls/?wa=wsignin1.0&wtrealm='
+                          'https%3a%2f%2funterricht.hsr.ch%2f')
     MODULE_BASE_NEXT = HSR_BASE + "CurrentSem/TimeTable/Overview/Module"
     # TODO: Test when ready: MODULE_BASE_NEXT = HSR_BASE + "NextSem/TimeTable/Overview/Module"
     MY_TIMETABLE = HSR_BASE + 'CurrentSem/TimeTable/Overview/Me'
@@ -22,17 +25,30 @@ class AdUnisHSR:
         return response.status_code == 401
 
     def signin(self, user, password):
-        if not self._in_HSR_network():
-            raise AuthenticationException("You must be in the HSR Network!")
+        if self._in_HSR_network():
+            self.session.auth = HttpNtlmAuth('HSR\\'+user, password, self.session)
 
-        self.session.auth = HttpNtlmAuth('HSR\\'+user, password, self.session)
+            response = self.session.get('https://adfs.hsr.ch/adfs/ls/auth/integrated/?wa='
+                                        'wsignin1.0&wtrealm=https://unterricht.hsr.ch/')
 
-        response = self.session.get('https://adfs.hsr.ch/adfs/ls/auth/integrated/?wa='
-                                    'wsignin1.0&wtrealm=https://unterricht.hsr.ch/')
-
-        if not response.status_code == 200:
-            raise AuthenticationException(
-                "Authentication has failed (Status code was %s)!" % response.status_code)
+            if not response.status_code == 200:
+                raise AuthenticationException(
+                    "Authentication has failed (Status code was %s)!" % response.status_code)
+        else:
+            print("External login....")
+            response = self.session.get(self.EXTERNAL_LOGIN_URL)
+            html = BeautifulSoup(response.text, "lxml")
+            payload = {'ctl00$ContentPlaceHolder1$UsernameTextBox': user,
+                       'ctl00$ContentPlaceHolder1$PasswordTextBox': password,
+                       'ctl00$ContentPlaceHolder1$SubmitButton': '',
+                       '__db': html.select('input[name="__db"]')[0]['value'],
+                       '__VIEWSTATE': html.select('input[name="__VIEWSTATE"]')[0]['value'],
+                       '__VIEWSTATEGENERATOR': html.select('input[name="__VIEWSTATEGENERATOR"]')[0]['value'],
+                       '__EVENTVALIDATION': html.select('input[name="__EVENTVALIDATION"]')[0]['value'],
+                       }
+            response = self.session.post(self.EXTERNAL_LOGIN_URL, data=payload)
+            if 'set-cookie' not in response.headers.keys():
+                raise AuthenticationException("Authentication has failed (Not accepted)!")
 
         html = BeautifulSoup(response.text, "lxml")
 
