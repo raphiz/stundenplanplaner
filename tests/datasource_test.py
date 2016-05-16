@@ -77,7 +77,7 @@ def test_lectures_times_happy_path():
         vorlesungen = [lectures_times for lt in lectures_times if lt['type'] == 'v']
         assert len(vorlesungen) >= 2 and len(uebungen) < len(lectures_times)
 
-    # TODO: Test for more modules
+    # TODO: Test with other modules
     begin_first_lesson = time(7, 5)
     begin_last_lesson = time(20, 5)
     for lesson in lectures_times:
@@ -89,4 +89,4 @@ def test_lectures_times_happy_path():
         assert lesson['class'] is not None
         assert lesson['team'] is None or re.match('^[0-9]$', lesson['class'])
         assert re.match('^[1-9]\.[0-9]*[a-z]?$', lesson['room']) is not None
-        # TODO: weeks
+        assert lesson['weeks'] is None or re.match('^([0-9]{1,2}(\,[0-9]{1,2})*)$', lesson['weeks']) is not None

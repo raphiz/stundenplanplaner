@@ -102,9 +102,11 @@ class AdUnisHSR:
 
                     lesson['teacher'] = self._to_string(children[9])  # Dozent
                     lesson['room'] = self._to_string(children[13])    # Zimmer
-                    # TODO: extract weeks only (Instead of KW 9,11,14,16,18,20,22: CN2Prak-p2)!
-                    # with the following regex: KW ([0-9]{1,2}(\,[0-9]{2})*):
-                    lesson['weeks'] = self._to_string(children[17])   # KW 39,41,43,45,47,49,51
+                    mtch = re.match('^KW ([0-9]{1,2}(\,[0-9]{1,2})*).*',
+                                    self._to_string(children[17]))
+                    lesson['weeks'] = None
+                    if mtch is not None:
+                        lesson['weeks'] = mtch.groups()[0]
                     time_fragments = time_str.split('-')[0].split(':')
                     lesson['start_time'] = time(hour=int(time_fragments[0]),
                                                 minute=int(time_fragments[1]))
