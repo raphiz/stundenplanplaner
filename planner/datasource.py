@@ -35,7 +35,6 @@ class AdUnisHSR:
                 raise AuthenticationException(
                     "Authentication has failed (Status code was %s)!" % response.status_code)
         else:
-            print("External login....")
             response = self.session.get(self.EXTERNAL_LOGIN_URL)
             html = BeautifulSoup(response.text, "lxml")
             payload = {'ctl00$ContentPlaceHolder1$UsernameTextBox': user,

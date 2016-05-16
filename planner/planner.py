@@ -21,10 +21,10 @@ class Planner:
         self.lectures = self.backend.lectures_times(self.modules, True)
         self.initialized = True
 
-    def solve(self, filters, constraints):
+    def solve(self, restrictions):
         """
         Calculates all possible timetable calculations for the given modules
-        and the given constraints.
+        and the given restrictions.
         """
         if not self.initialized:
             self._initialize()
@@ -48,15 +48,16 @@ class Planner:
                 if items[0]['class'] in groups_v.keys():
                     items = items + groups_v[items[0]['class']]
 
-                if not self._is_filtered(filters, items):
+                if not self._is_filtered(restrictions, items):
                     combinations.append(items)
             problem.add_variable(key, combinations)
 
         problem.add_constraint(self._unique_timing, problem._variables.keys())
 
         # One afternoon free - at least twice a week starting at 10
-        for constraint in constraints:
-            problem.add_constraint(constraint, problem._variables.keys())
+        for restriction in restrictions:
+            if restriction.is_constraint:
+                problem.add_constraint(restriction.constraint, problem._variables.keys())
 
         start = datetime.now()
         solutions = problem.get_solutions()
@@ -64,11 +65,13 @@ class Planner:
         print("Found %s solutions!" % len(solutions))
         return solutions
 
-    def _is_filtered(self, filters, items):
-        for current in filters:
-            if len(items) != len(filter(current, items)):
-                print("Possible combination removed by filter %s (%s)" %
-                      (current.__name__, [l['name'] for l in items]))
+    def _is_filtered(self, restrictions, items):
+        for restriction in restrictions:
+            if not restriction.is_filter:
+                return False
+            if len(items) != len(filter(restriction.filter, items)):
+                print("Possible combination removed by filter \"%s\" (%s)" %
+                      (restriction, [l['name'] for l in items]))
                 return True
         return False
 

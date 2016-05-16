@@ -5,3 +5,4 @@ mocks.yaml
 .cache
 legacy
 fixtures
+planner.egg-info
