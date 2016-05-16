@@ -18,9 +18,8 @@ class AdUnisHSR:
         self.signed_in = False
 
     def _in_HSR_network(self):
-        response = requests.get('https://adfs.hsr.ch/adfs/ls/auth/integrated/?wa=wsignin1.0')
-        # TODO: This check does not work
-        return response.status_code == 200 or response.status_code == 401
+        response = requests.get(self.HSR_BASE)
+        return response.status_code == 401
 
     def signin(self, user, password):
         if not self._in_HSR_network():
