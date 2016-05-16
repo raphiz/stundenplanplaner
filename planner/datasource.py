@@ -9,8 +9,8 @@ from datetime import datetime, date, time, timedelta
 class AdUnisHSR:
 
     HSR_BASE = "http://unterricht.hsr.ch/"
-    MODULE_BASE_CURRENT = HSR_BASE + "CurrentSem/TimeTable/Overview/Module"
-    MODULE_BASE_NEXT = HSR_BASE + "NextSem/TimeTable/Overview/Module"
+    MODULE_BASE_NEXT = HSR_BASE + "CurrentSem/TimeTable/Overview/Module"
+    # TODO: Test when ready: MODULE_BASE_NEXT = HSR_BASE + "NextSem/TimeTable/Overview/Module"
     MY_TIMETABLE = HSR_BASE + 'CurrentSem/TimeTable/Overview/Me'
 
     def __init__(self):
@@ -51,8 +51,7 @@ class AdUnisHSR:
         if not self.signed_in:
             raise AuthenticationException("You must log in before you can query!")
         modules = {}
-        # TODO: current vs next semester?
-        html = BeautifulSoup(self.session.get(self.MODULE_BASE_CURRENT).text, "lxml")
+        html = BeautifulSoup(self.session.get(self.MODULE_BASE_NEXT).text, "lxml")
         for option in html.select("option"):
             m = re.search('.*\[M_(.*)\]', option.get_text())
             if m is not None:
@@ -68,8 +67,7 @@ class AdUnisHSR:
         headers = {'Referer': 'https://unterricht.hsr.ch/NextSem/TimeTable/Register'}
 
         for module in modules:
-            # TODO: Change to NEXT!
-            timetable_url = self.MODULE_BASE_CURRENT + '?modId=' + modules_ids[module]
+            timetable_url = self.MODULE_BASE_NEXT + '?modId=' + modules_ids[module]
             lectures[module] = self._parse_timetable(self.session.get(timetable_url).text)
             # TODO: Test when available!
             # if include_availability:
@@ -83,7 +81,7 @@ class AdUnisHSR:
 
         rows = table.findAll('tr')
         lessons = []
-        p = re.compile(ur'([A-Za-z0-9]+)-(v|u)([0-9])([0-9]?)')
+        p = re.compile(ur'([A-Za-z0-9]+)-(v|u|p)([0-9])([0-9]?)')
 
         for cell in rows[1:]:
             time_str = cell.th.string.strip()
@@ -104,6 +102,8 @@ class AdUnisHSR:
 
                     lesson['teacher'] = self._to_string(children[9])  # Dozent
                     lesson['room'] = self._to_string(children[13])    # Zimmer
+                    # TODO: extract weeks only (Instead of KW 9,11,14,16,18,20,22: CN2Prak-p2)!
+                    # with the following regex: KW ([0-9]{1,2}(\,[0-9]{2})*):
                     lesson['weeks'] = self._to_string(children[17])   # KW 39,41,43,45,47,49,51
                     time_fragments = time_str.split('-')[0].split(':')
                     lesson['start_time'] = time(hour=int(time_fragments[0]),
