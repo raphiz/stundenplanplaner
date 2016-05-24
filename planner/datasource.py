@@ -12,9 +12,9 @@ class AdUnisHSR:
     HSR_BASE = "http://unterricht.hsr.ch/"
     EXTERNAL_LOGIN_URL = ('https://adfs.hsr.ch/adfs/ls/?wa=wsignin1.0&wtrealm='
                           'https%3a%2f%2funterricht.hsr.ch%2f')
-    MODULE_BASE_NEXT = HSR_BASE + "CurrentSem/TimeTable/Overview/Module"
+    MODULE_BASE_NEXT = HSR_BASE + "NextSem/TimeTable/Overview/Module"
     # TODO: Test when ready: MODULE_BASE_NEXT = HSR_BASE + "NextSem/TimeTable/Overview/Module"
-    MY_TIMETABLE = HSR_BASE + 'CurrentSem/TimeTable/Overview/Me'
+    MY_TIMETABLE = HSR_BASE + 'NextSem/TimeTable/Overview/Me'
 
     def __init__(self):
         self.session = requests.Session()
