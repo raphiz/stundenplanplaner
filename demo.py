@@ -30,21 +30,22 @@ def printTimeTable(lectures):
     print(tabulate(table, headers="firstrow"))
 
 
-with vcr.use_cassette('fixtures/demo'):
-    modules = ['AD1', 'An2I', 'AutoSpr', 'ExEv', 'InfSi1', 'Bsys2', 'RKI', 'WED1']
+with vcr.use_cassette('fixtures/demo', record_mode='new_episodes'):
+    modules = ['MsTe', 'AD2', 'BuRe1', 'CPl', 'MGE', 'SE1', 'WED2']
 
     source = AdUnisHSR()
     username, password = utils.parse_user_credentials('auth.cfg')
     response = source.signin(username, password)
 
     filters = [  # Only allow lessons between 7 and 18 o'clock
-                 restrictions.InTimeRange(time(7, 0), time(18, 00)),
+                  restrictions.InTimeRange(time(7, 0), time(18, 00)),
                  # Minimal required chance - if available
                  restrictions.MinChance(30),
                  # once a week an afternoon off
-                 restrictions.FreeTime(1, range(5), time(12), time(23)),
+                 restrictions.FreeTime(3, range(5), time(12), time(23)),
                  # twice a week no module before 9 o'clock
-                 restrictions.FreeTime(2, range(5), time(6), time(9))]
+                  restrictions.FreeTime(2, range(5), time(6), time(9))
+                ]
 
     planner = Planner(modules, source)
     solutions = planner.solve(filters)
