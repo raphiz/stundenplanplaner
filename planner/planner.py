@@ -1,6 +1,6 @@
 from pyconstraints import Problem
 from datetime import datetime
-from itertools import groupby
+from itertools import groupby, product
 
 
 class Planner:
@@ -30,31 +30,39 @@ class Planner:
             self._initialize()
 
         problem = Problem()
-        for key, lessons in self.lectures.items():
+        for key, module_lessons in self.lectures.items():
+            module_lessons = sorted(module_lessons, key=lambda l: l['abbrev'])
+            sub_lectures = groupby(module_lessons, lambda l: l['abbrev'])
+            for abbrev, lessons in sub_lectures:
+                lessons = sorted(lessons, key=lambda l: l['class'])
+                combinations = []
+                for classnr, cls_lessons in groupby(lessons, lambda l: l['class']):
+                    cls_lessons = sorted(cls_lessons, key=lambda l: l['type'])
 
-            lectures = [l for l in lessons if l['type'] == 'v']
-            exercises = [l for l in lessons if l['type'] == 'u']
+                    temporary_combinations = []
 
-            lectures = sorted(lectures, key=lambda l: l['name'])
-            exercises = sorted(exercises, key=lambda l: l['name'])
+                    grouped_by_type = [list(v) for k, v in groupby(cls_lessons, lambda l: l['type'])]
+                    if len(grouped_by_type) == 1:
+                        for g in grouped_by_type:
+                            combinations.append(g)
+                        continue
+                    for lessons_by_type in grouped_by_type:
+                        lessons_by_type = sorted(lessons_by_type, key=lambda l: l['team'])
+                        u_or_v = []
+                        for _, lessons_by_team in groupby(lessons_by_type, lambda l: l['team']):
+                            u_or_v.append([l for l in lessons_by_team])
 
-            groups_v = dict((k, list(v)) for k, v in groupby(lectures, lambda l: l['class']))
-            groups_u = groupby(exercises, lambda l: l['name'])
+                        if len(temporary_combinations) == 0:
+                            temporary_combinations = [u_or_v]
+                        else:
+                            for combi in temporary_combinations:
+                                for x in combi:
+                                    for y in u_or_v:
+                                        combinations.append(x+y)
 
-            combinations = []
-            for k, items in groups_u:
-                items = [i for i in items]
-
-                if items[0]['class'] in groups_v.keys():
-                    items = items + groups_v[items[0]['class']]
-
-                if not self._is_filtered(restrictions, items):
-                    combinations.append(items)
-            problem.add_variable(key, combinations)
+                problem.add_variable(abbrev, combinations)
 
         problem.add_constraint(self._unique_timing, problem._variables.keys())
-
-        # One afternoon free - at least twice a week starting at 10
         for restriction in restrictions:
             if restriction.is_constraint:
                 problem.add_constraint(restriction.constraint, problem._variables.keys())
@@ -83,3 +91,28 @@ class Planner:
                     return False
                 slots[lesson['day']].append(lesson['start_time'])
         return True
+
+    def verify(self, specs, modules_by_type):
+        for name, spec in specs.items():
+            if type(spec) == list:
+                for u_spec in spec:
+                    if 'abbrev' not in u_spec.keys():
+                        raise Exception("abbrev in Module spec for %s not defined!" % (name))
+                    self._verify_module(u_spec, modules_by_type)
+            else:
+                if 'abbrev' not in spec.keys():
+                    spec['abbrev'] = name
+                self._verify_module(spec, modules_by_type)
+
+    def _verify_module(self, spec, modules_by_type):
+        abbrev = spec.pop('abbrev')
+        for module_type, amount_of_lessons in spec.items():
+            count = 0
+            for module in modules_by_type[abbrev]:
+                if module['abbrev'] == abbrev and module['type'] == module_type:
+                    count += 1
+            if count != amount_of_lessons:
+                raise Exception('The solution is invalid! Expected %s Lessons in %s of type %s '
+                                '(But %s were found)' % (amount_of_lessons, abbrev,
+                                                         module_type, count))
+        spec['abbrev'] = abbrev

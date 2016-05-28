@@ -23,32 +23,49 @@ def printTimeTable(lectures):
             if len(res) > 1:
                 row.append('CONFLICT')
             if len(res) == 1:
-                row.append(res[0]['name'])
+                if res[0]['weeks']:
+                    row.append(res[0]['name'] + '\n' + res[0]['weeks'])
+                else:
+                    row.append(res[0]['name'])
             else:
                 row.append('')
         table.append(row)
     print(tabulate(table, headers="firstrow"))
+    for lecture in lectures:
+        if lecture['weeks'] is not None:
+            print("WARNING: Lesson %s is only in KW %s" % (lecutre['name'], lecture['weeks']))
 
 
 with vcr.use_cassette('fixtures/demo', record_mode='new_episodes'):
-    modules = ['MsTe', 'AD2', 'BuRe1', 'CPl', 'MGE', 'SE1', 'WED2']
+    module_spec = {'MsTe': {'v': 2, 'u': 2},
+                   'AD2': {'v': 2, 'u': 2},
+                   'BuRe1': [
+                    {'abbrev': 'ReIng', 'v': 2},
+                    {'abbrev': 'BuPl', 'v': 1, 'u': 1},
+                   ],
+                   'CPl': {'v': 2, 'u': 2},
+                   'MGE': {'v': 2, 'u': 2},
+                   'SE1': {'v': 2, 'u': 2},
+                   'WED2': {'v': 2, 'u': 2},
+                   'PrFm': {'v': 2, 'u': 2}
+                   }
 
     source = AdUnisHSR()
     username, password = utils.parse_user_credentials('auth.cfg')
     response = source.signin(username, password)
 
-    filters = [  # Only allow lessons between 7 and 18 o'clock
-                  restrictions.InTimeRange(time(7, 0), time(18, 00)),
-                 # Minimal required chance - if available
-                 restrictions.MinChance(30),
-                 # once a week an afternoon off
-                 restrictions.FreeTime(3, range(5), time(12), time(23)),
-                 # twice a week no module before 9 o'clock
-                  restrictions.FreeTime(2, range(5), time(6), time(9))
+    filters = [
+                restrictions.InTimeRange(time(7, 0), time(18, 00)),
+                restrictions.MinChance(30),
+                restrictions.FreeTime(3, range(5), time(12), time(23)),
+                # restrictions.FreeTime(1, range(5), time(6), time(23))
                 ]
 
-    planner = Planner(modules, source)
+    planner = Planner(module_spec.keys(), source)
     solutions = planner.solve(filters)
+
+    for solution in solutions:
+        planner.verify(module_spec, solution)
 
     # Print max. 10 timetables
     nr_timetables_to_print = len(solutions) if len(solutions) < 10 else 10

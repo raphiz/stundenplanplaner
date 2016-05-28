@@ -1,6 +1,6 @@
 .PHONY: build test
 
-run_in_docker = docker run -t -i --rm --name hsrplanner -v $(shell pwd):/src/ -p 4000:4000 raphiz/hsrplanner /bin/bash -c
+run_in_docker = docker run -t -i --rm --name hsrplanner -v $(shell pwd):/src/ raphiz/hsrplanner /bin/bash -c
 
 default: buildimage
 

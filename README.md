@@ -29,3 +29,26 @@ password=<hsr-passwort>
 ```
 
 Die Demo kann nun mittels `sudo make demo` ausgeführt werden.
+
+Das Resultat sollte etwa so aussehen:
+
+```
+[...]
+Calculation took 43.428021 seconds
+Found 4 solutions!
+Time      Mon      Tue       Wed       Thu       Fri       Sat    Sun
+--------  -------  --------  --------  --------  --------  -----  -----
+08:10:00  WED2-v1  AD2-v1    BuPl-v6   PrFm-v1   PrFm-u11
+09:05:00  WED2-v1  AD2-v1    BuPl-u61  PrFm-v1   PrFm-u11
+10:10:00  MGE-v1   SE1-v1    CPl-v1    WED2-u13  MGE-u11
+11:05:00  MGE-v1   SE1-v1    CPl-v1    WED2-u13  MGE-u11
+12:10:00                     MsTe-v1
+13:10:00           AD2-u14
+14:05:00           AD2-u14   MsTe-v1
+15:10:00           SE1-u14   CPl-u12
+16:05:00           SE1-u14   CPl-u12
+17:00:00           ReIng-v1  MsTe-u11
+17:55:00           ReIng-v1  MsTe-u11
+
+[...]
+```
