@@ -33,7 +33,7 @@ def printTimeTable(lectures):
     print(tabulate(table, headers="firstrow"))
     for lecture in lectures:
         if lecture['weeks'] is not None:
-            print("WARNING: Lesson %s is only in KW %s" % (lecutre['name'], lecture['weeks']))
+            print("WARNING: Lesson %s is only in KW %s" % (lecture['name'], lecture['weeks']))
 
 
 with vcr.use_cassette('fixtures/demo', record_mode='new_episodes'):
