@@ -96,7 +96,7 @@ class AdUnisHSR:
 
         rows = table.findAll('tr')
         lessons = []
-        p = re.compile(ur'([A-Za-z0-9]+)-(v|u|p)([0-9])([0-9]?)')
+        p = re.compile(ur'([A-Za-z0-9]+)-(v|u|p|se)([0-9])([0-9]?)')
 
         for cell in rows[1:]:
             time_str = cell.th.string.strip()
