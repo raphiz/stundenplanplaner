@@ -1,7 +1,9 @@
-from .exceptions import AuthenticationException
-
 import re
-from datetime import datetime, date, time, timedelta
+from datetime import time
+
+from .exceptions import AuthenticationException
+from .exceptions import ScraperException
+from .exceptions import DatasourceException
 
 import requests
 from requests_ntlm import HttpNtlmAuth
@@ -9,46 +11,278 @@ from bs4 import BeautifulSoup
 
 
 class AdUnisHSR:
-    HSR_BASE = "http://unterricht.hsr.ch/"
-    EXTERNAL_LOGIN_URL = ('https://adfs.hsr.ch/adfs/ls/?wa=wsignin1.0&wtrealm='
-                          'https%3a%2f%2funterricht.hsr.ch%2f')
-    MODULE_BASE_NEXT = HSR_BASE + "NextSem/TimeTable/Overview/Module"
-    # TODO: Test when ready: MODULE_BASE_NEXT = HSR_BASE + "NextSem/TimeTable/Overview/Module"
-    TIMETABLE_ME = HSR_BASE + '%s/TimeTable/Overview/Me'
-    TIMETABLE_USER = HSR_BASE + '%s/TimeTable/Overview/Student'
-    CURRENT_PLACEHOLDER = 'CurrentSem'
-    NEXT_PLACEHOLDER = 'NextSem'
+    """
+    This class provides an API for the HSR AdUnis webportal.
+
+    THE PROGRAM IS DISTRIBUTED IN THE HOPE THAT IT WILL BE USEFUL, BUT WITHOUT ANY WARRANTY!
+    """
+
+    CURRENT_SEMESTER = 'CURRENT_SEMESTER'
+    NEXT_SEMESTER = 'NEXT_SEMESTER'
+
+    def __init__(self, cache_enabled=True):
+        self.scraper = _AdUnisScraper()
+        self.cache_enabled = cache_enabled
+        self.cache = {}
+        self.signed_in = False
+
+    def signin(self, user, password):
+        """
+        Sign in the given user using the provided password.
+
+        If the authentication fails, a AuthenticationException is thrown
+
+        it is possible, that a ScraperException is thrown. This indicates that
+        something has changed on the AdUnis site and the scraper needs to be updated.
+
+        """
+        self.scraper.signin(user, password)
+        self.signed_in = True
+
+    def modules(self, semester):
+        """
+        Returns an unordered list of *all* modules in the provided semester.
+
+        Note that the attributes starting with an underscore should not be used since they
+        are for internal purpose.
+
+        Example result:
+        ```
+        [
+            {
+                'department': u 'EEU',
+                '_id': '59791',
+                'name': u 'Thermo- und Fluiddynamik 1 (EEU)',
+                'id': u 'TFD1EU'
+            }, {
+                'department': u 'I',
+                '_id': '57886',
+                'name': u 'Studienarbeit Informatik',
+                'id': u 'SAI14'
+            }
+          [...]
+        ]
+        ```
+        """
+        self._require_signin()
+        self._validate_semester(semester)
+
+        modules_by_id = self._cached(self.scraper.modules_by_id, semester)
+        return modules_by_id.values()
+
+    def students(self, semester):
+        """
+        Returns an unordered list of *all* students in the provided semester.
+
+        Note that the attributes starting with an underscore should not be used since they
+        are for internal purpose.
+
+        Example result:
+        ```
+        [
+          {
+              'lastname': u 'Muster',
+              '_id': '22222',
+              'firstame': u 'Maria',
+              'id': u '500000'
+          }, {
+              'lastname': u 'Meier',
+              '_id': '33333',
+              'firstame': u 'Hans Felix',
+              'id': u '500001'
+          }
+          [...]
+        ]
+        ```
+        """
+        self._require_signin()
+        self._validate_semester(semester)
+
+        students_by_id = self._cached(self.scraper.students_by_id, semester)
+        return students_by_id.values()
+
+    def subscribed_modules(self, semester):
+        self._require_signin()
+        # TODO: $('#unregisterForm td > a')
+
+    def subscribable_modules(self, semester):
+        self._require_signin()
+        # TODO: $('#registerForm td > a')
+
+    def lessons_for_module(self, semester, module_identifier):
+        """
+        Returns an *unordered* list of all lessons of the given module.
+
+        The module_identifier is the abbrevation of a Module, eg. InfSi1
+
+        Example result:
+        ```
+        [
+          {
+              'start_time': datetime.time(10, 10),
+              'name': u 'InfSi1-v1',
+              'teacher': u 'HEI SFF',
+              'day': 'Mon',
+              'abbrev': u 'InfSi1',
+              'team': u '',
+              'weeks': None,
+              'type': u 'v',
+              'class': u '1',
+              'room': u '3.008'
+          }, {
+              'start_time': datetime.time(11, 5),
+              'name': u 'InfSi1-v1',
+              'teacher': u 'HEI SFF',
+              'day': 'Mon',
+              'abbrev': u 'InfSi1',
+              'team': u '',
+              'weeks': None,
+              'type': u 'v',
+              'class': u '1',
+              'room': u '3.008'
+          },
+          [...]
+        ]
+        ```
+        """
+        self._require_signin()
+        self._validate_semester(semester)
+
+        modules_by_id = self._cached(self.scraper.modules_by_id, semester)
+        if module_identifier not in modules_by_id.keys():
+            raise DatasourceException('Module %s not found!' % module_identifier)
+
+        internal_id = modules_by_id[module_identifier]['_id']
+        return self._cached(self.scraper.lectures_times_module, semester, internal_id)
+
+    def lessons_for_student(self, semester, student_identifier):
+        """
+        Returns an *unordered* list of all lessons of the given module.
+
+        The module_identifier is the abbrevation of a Module, eg. InfSi1
+
+        Example result:
+        ```
+        [
+           {
+               'start_time': datetime.time(8, 10),
+               'name': u 'AD1-v1',
+               'teacher': u 'LET',
+               'day': 'Tue',
+               'abbrev': u 'AD1',
+               'team': u '',
+               'weeks': None,
+               'type': u 'v',
+               'class': u '1',
+               'room': u '3.008'
+           }, {
+               'start_time': datetime.time(8, 10),
+               'name': u 'An2I-v2',
+               'teacher': u 'AUG',
+               'day': 'Wed',
+               'abbrev': u 'An2I',
+               'team': u '',
+               'weeks': None,
+               'type': u 'v',
+               'class': u '2',
+               'room': u '1.207'
+          }
+          [...]
+        ]
+        ```
+        """
+        self._require_signin()
+        self._validate_semester(semester)
+
+        students_by_id = self._cached(self.scraper.students_by_id, semester)
+        if student_identifier not in students_by_id.keys():
+            raise DatasourceException('Student %s not found!' % student_identifier)
+
+        internal_id = students_by_id[student_identifier]['_id']
+        return self._cached(self.scraper.lectures_times_student, semester, internal_id)
+
+    def _require_signin(self):
+        """
+        Simple utility method to ensure that the user is logged in.
+        """
+        if not self.signed_in:
+            raise AuthenticationException('Not signed in!')
+
+    def _validate_semester(self, semester):
+        """
+        Simple utility method to ensure that the given semester value is valid.
+        """
+        if semester not in [self.CURRENT_SEMESTER, self.NEXT_SEMESTER]:
+            raise DatasourceException('The specified semester value is invalid!')
+
+    def _cached(self, method, *args):
+        """
+        Call the given method (and store it in the cache if enabled)
+        or load the result from the cache (if enabled)
+        """
+        cache_key = method.__name__ + '-' + '-'.join(args)
+        loaded_value = None
+        if self.cache_enabled and cache_key in self.cache.keys():
+            loaded_value = self.cache[cache_key]
+        else:
+            loaded_value = method(*args)
+            if self.cache_enabled:
+                self.cache[cache_key] = loaded_value
+        return loaded_value
+
+
+class _AdUnisScraper:
+    """
+    This is the part, where the ADUNIS site is parsed directly.
+    INTERNAL USE ONLY!
+    """
+
+    HSR_BASE_URL = 'https://unterricht.hsr.ch/'
+    LOGIN_BASE_URL = 'https://adfs.hsr.ch/adfs/ls/'
+
+    EXTERNAL_LOGIN_URL = LOGIN_BASE_URL + '?wa=wsignin1.0&wtrealm=' + HSR_BASE_URL
+    INTERNAL_LOGIN_URL = LOGIN_BASE_URL + '/auth/integrated/?wa=wsignin1.0&wtrealm=' + HSR_BASE_URL
+
+    MODULE_TIMETABLE_URL = HSR_BASE_URL + "%s/TimeTable/Overview/Module"
+    STUDENT_TIMETABLE_URL = HSR_BASE_URL + '%s/TimeTable/Overview/Student'
+
+    REGISTER_FORM_URL = HSR_BASE_URL + '%s/TimeTable/Register'
+
+    SEMSTER_PLACEHOLDERS = {
+        AdUnisHSR.CURRENT_SEMESTER: 'CurrentSem',
+        AdUnisHSR.NEXT_SEMESTER: 'NextSem'
+    }
 
     def __init__(self):
         self.session = requests.Session()
-        self.signed_in = False
 
     def _in_HSR_network(self):
-        response = requests.get(self.HSR_BASE)
+        response = requests.get(self.HSR_BASE_URL)
         return response.status_code == 401
 
     def signin(self, user, password):
         if self._in_HSR_network():
             self.session.auth = HttpNtlmAuth('HSR\\'+user, password, self.session)
-
-            response = self.session.get('https://adfs.hsr.ch/adfs/ls/auth/integrated/?wa='
-                                        'wsignin1.0&wtrealm=https://unterricht.hsr.ch/')
+            response = self.session.get(self.INTERNAL_LOGIN_URL)
 
             if not response.status_code == 200:
-                raise AuthenticationException(
-                    "Authentication has failed (Status code was %s)!" % response.status_code)
+                raise AuthenticationException("Authentication has failed (Status code was %s)!"
+                                              % response.status_code)
         else:
             response = self.session.get(self.EXTERNAL_LOGIN_URL)
             html = BeautifulSoup(response.text, "lxml")
-            payload = {'ctl00$ContentPlaceHolder1$UsernameTextBox': user,
-                       'ctl00$ContentPlaceHolder1$PasswordTextBox': password,
-                       'ctl00$ContentPlaceHolder1$SubmitButton': '',
-                       '__db': html.select('input[name="__db"]')[0]['value'],
-                       '__VIEWSTATE': html.select('input[name="__VIEWSTATE"]')[0]['value'],
-                       '__VIEWSTATEGENERATOR': html.select('input[name="__VIEWSTATEGENERATOR"]')[0]['value'],
-                       '__EVENTVALIDATION': html.select('input[name="__EVENTVALIDATION"]')[0]['value'],
-                       }
+            payload = {
+                'ctl00$ContentPlaceHolder1$UsernameTextBox': user,
+                'ctl00$ContentPlaceHolder1$PasswordTextBox': password,
+                'ctl00$ContentPlaceHolder1$SubmitButton': '',
+                '__db': html.select('input[name="__db"]')[0]['value'],
+                '__VIEWSTATE': html.select('input[name="__VIEWSTATE"]')[0]['value'],
+                '__VIEWSTATEGENERATOR': html.select('[name="__VIEWSTATEGENERATOR"]')[0]['value'],
+                '__EVENTVALIDATION': html.select('[name="__EVENTVALIDATION"]')[0]['value']
+            }
+
             response = self.session.post(self.EXTERNAL_LOGIN_URL, data=payload)
+
             if 'set-cookie' not in response.headers.keys():
                 raise AuthenticationException("Authentication has failed (Not accepted)!")
 
@@ -58,85 +292,71 @@ class AdUnisHSR:
             'wa': html.select('input[name="wa"]')[0]['value'],
             'wresult': html.select('input[name="wresult"]')[0]['value'],
         }
-        response = self.session.post('https://unterricht.hsr.ch/', data=payload)
+
+        response = self.session.post(self.HSR_BASE_URL, data=payload)
         if not response.status_code == 200:
             raise AuthenticationException(
                 "Authentication has failed (Status code was %s)!" % response.status_code)
-        self.signed_in = True
         return response
 
-    def all_modules_ids(self):
-        if not self.signed_in:
-            raise AuthenticationException("You must log in before you can query!")
+    def modules_by_id(self, semester):
+        url = self.MODULE_TIMETABLE_URL % self.SEMSTER_PLACEHOLDERS[semester]
+        html = self._request_page(url)
+
         modules = {}
-        html = BeautifulSoup(self.session.get(self.MODULE_BASE_NEXT).text, "lxml")
-        for option in html.select("option"):
-            m = re.search('.*\[M_(.*)\]', option.get_text())
-            if m is not None:
-                modules[m.group(1)] = option.get('value')
+        pattern = re.compile('^(.*) \[M_(.*)\] \(([A-Z]*)\)$')
+        for option in html.select("#Parameter_ModulId .selectListLevel1"):
+            match = pattern.match(option.get_text())
+            if match is None:
+                raise ScraperException('Failed to parse module name %s' % option.get_text())
+            groups = match.groups()
+            modules[groups[1]] = {'_id': option.get('value'),
+                                  'name': groups[0],
+                                  'id': groups[1],
+                                  'department': groups[2]}
         return modules
 
-    def lectures_times(self, modules, include_availability=False):
-        if not self.signed_in:
-            raise AuthenticationException("You must log in before you can query!")
+    def students_by_id(self, semester):
+        url = self.STUDENT_TIMETABLE_URL % self.SEMSTER_PLACEHOLDERS[semester]
+        html = self._request_page(url)
 
-        modules_ids = self.all_modules_ids()
-        lectures = {}
-        headers = {'Referer': 'https://unterricht.hsr.ch/NextSem/TimeTable/Register'}
-
-        for module in modules:
-            timetable_url = self.MODULE_BASE_NEXT + '?modId=' + modules_ids[module]
-            lectures[module] = self._parse_timetable(self.session.get(timetable_url).text)
-            # TODO: Test when available!
-            # if include_availability:
-            #     av_url = AVAILABILITY_BASE + '?id=' + modules_ids[module]
-            #     parse_availability(lectures[module], session.get(av_url, headers=headers).json())
-        return lectures
-
-    def _all_student_numbers(self):
-        # TODO: cache!
         students = {}
-        pattern = re.compile('(.*) \(([0-9]*)\)')
-
-        html = BeautifulSoup(self.session.get(self.TIMETABLE_USER % self.CURRENT_PLACEHOLDER).text, "lxml")
+        pattern = re.compile('^([^\,]*), ([^\,]*) \(([0-9]*)\)$')
         for option in html.select("#Parameter_StudentRollenId .selectListLevel1"):
-            groups = pattern.match(option.get_text()).groups()
-            students[groups[1]] = {'names': groups[0], 'internal_id': option.get('value')}
-
+            match = pattern.match(option.get_text())
+            if match is None:
+                raise ScraperException('Failed to parse student name %s' % option.get_text())
+            groups = match.groups()
+            students[groups[2]] = {'_id': option.get('value'),
+                                   'lastname': groups[0],
+                                   'firstame': groups[1],
+                                   'id': groups[2]}
         return students
 
-    def timetable_curr_sem(self, stud_nr=None):
-        """
-        If no user is given, the current logged-in user is used.
-        """
-        return self._timetable_for_sem(stud_nr, self.CURRENT_PLACEHOLDER)
+    def lectures_times_module(self, semester, internal_module_id):
+        url = self.MODULE_TIMETABLE_URL % self.SEMSTER_PLACEHOLDERS[semester]
+        url += '?modId=' + internal_module_id
+        html = self._request_page(url)
+        return self._parse_timetable(html)
 
+    def lectures_times_student(self, semester, internal_student_id):
+        url = url = self.STUDENT_TIMETABLE_URL % self.SEMSTER_PLACEHOLDERS[semester]
+        url += '?studId=' + internal_student_id
+        html = self._request_page(url)
+        return self._parse_timetable(html)
 
-    def timetable_next_sem(self, stud_nr=None):
-        """
-        If no user is given, the current logged-in user is used.
-        """
-        return self._timetable_for_sem(stud_nr, self.NEXT_PLACEHOLDER)
-
-    def _timetable_for_sem(self, stud_nr, semester):
-        url = self.TIMETABLE_ME % semester
-        if stud_nr is not None:
-            internal_id = self._all_student_numbers()[str(stud_nr)]['internal_id']
-            url = (self.TIMETABLE_USER % semester) + '?studId=' + internal_id
-
+    def _request_page(self, url):
         response = self.session.get(url)
-        if response.status_code == requests.codes.ok:
-            return self._parse_timetable(response.text)
-        else:
-            raise Exception("Whops...TODO")
+        if response.status_code != 200:
+            raise ScraperException('Failed to fetch URL %s (%s)' % (url, response.status_code))
+        return BeautifulSoup(response.text, 'lxml')
 
-    def _parse_timetable(self, raw):
-        soup = BeautifulSoup(raw, "lxml")
+    def _parse_timetable(self, soup):
         table = soup.find('table', {'id': 'timeTable'})
 
         rows = table.findAll('tr')
         lessons = []
-        p = re.compile(ur'([A-Za-z0-9]+)-(v|u|p|se)([0-9])([0-9]?)')
+        p = re.compile(ur'([A-Za-z0-9]+)-([a-z]+)([0-9])([0-9]?)')
 
         for cell in rows[1:]:
             time_str = cell.th.string.strip()
@@ -157,11 +377,11 @@ class AdUnisHSR:
 
                     lesson['teacher'] = self._to_string(children[9])  # Dozent
                     lesson['room'] = self._to_string(children[13])    # Zimmer
-                    mtch = re.match('^KW ([0-9]{1,2}(\,[0-9]{1,2})*).*',
-                                    self._to_string(children[17]))
+                    w_match = re.match('^KW ([0-9]{1,2}(\,[0-9]{1,2})*).*',
+                                       self._to_string(children[17]))
                     lesson['weeks'] = None
-                    if mtch is not None:
-                        lesson['weeks'] = mtch.groups()[0]
+                    if w_match is not None:
+                        lesson['weeks'] = w_match.groups()[0]
                     time_fragments = time_str.split('-')[0].split(':')
                     lesson['start_time'] = time(hour=int(time_fragments[0]),
                                                 minute=int(time_fragments[1]))

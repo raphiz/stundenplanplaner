@@ -3,37 +3,7 @@ from planner import Planner
 from planner import utils
 from planner import restrictions
 from datetime import time
-from tabulate import tabulate
 import vcr
-
-DAYS_OF_THE_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-
-
-def printTimeTable(lectures):
-    """
-    Utility Method to print timetables
-    """
-    times = sorted(set(map(lambda l: l['start_time'], lectures)))
-
-    table = [["Time"] + DAYS_OF_THE_WEEK]
-    for time in times:
-        row = [time]
-        for day in DAYS_OF_THE_WEEK:
-            res = filter(lambda l: l['start_time'] == time and l['day'] == day, lectures)
-            if len(res) > 1:
-                row.append('CONFLICT')
-            if len(res) == 1:
-                if res[0]['weeks']:
-                    row.append(res[0]['name'] + '\n' + res[0]['weeks'])
-                else:
-                    row.append(res[0]['name'])
-            else:
-                row.append('')
-        table.append(row)
-    print(tabulate(table, headers="firstrow"))
-    for lecture in lectures:
-        if lecture['weeks'] is not None:
-            print("WARNING: Lesson %s is only in KW %s" % (lecture['name'], lecture['weeks']))
 
 
 with vcr.use_cassette('fixtures/demo_timetables', record_mode='new_episodes'):
@@ -61,7 +31,7 @@ with vcr.use_cassette('fixtures/demo_timetables', record_mode='new_episodes'):
                 # restrictions.FreeTime(1, range(5), time(6), time(23))
                 ]
 
-    planner = Planner(module_spec.keys(), source)
+    planner = Planner(module_spec.keys(), source, AdUnisHSR.NEXT_SEMESTER)
     solutions = planner.solve(filters)
 
     for solution in solutions:
@@ -74,5 +44,5 @@ with vcr.use_cassette('fixtures/demo_timetables', record_mode='new_episodes'):
         for val in solutions[i].values():
             lectures += val
         # printer.verify(lectures)
-        printTimeTable(lectures)
+        utils.print_time_table(lectures)
         print('\n')

@@ -5,12 +5,13 @@ from itertools import groupby, product
 
 class Planner:
 
-    def __init__(self, modules, backend):
+    def __init__(self, modules, backend, semester):
         """
         Note, that the given backend must be initialized (eg. user must be logged in)
         """
         self.modules = modules
         self.backend = backend
+        self.semester = semester
         self.initialized = False
 
     def _initialize(self):
@@ -18,7 +19,9 @@ class Planner:
         Loads the data from the backend and caches the data required for
         calculating a Timetable combination.
         """
-        self.lectures = self.backend.lectures_times(self.modules, True)
+        self.lectures = {}
+        for module in self.modules:
+            self.lectures[module] = self.backend.lessons_for_module(self.semester, module)
         self.initialized = True
 
     def solve(self, restrictions):
