@@ -36,7 +36,7 @@ def printTimeTable(lectures):
             print("WARNING: Lesson %s is only in KW %s" % (lecture['name'], lecture['weeks']))
 
 
-with vcr.use_cassette('fixtures/demo', record_mode='new_episodes'):
+with vcr.use_cassette('fixtures/demo_timetables', record_mode='new_episodes'):
     module_spec = {'MsTe': {'v': 2, 'u': 2},
                    'AD2': {'v': 2, 'u': 2},
                    'BuRe1': [

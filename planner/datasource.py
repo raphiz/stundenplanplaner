@@ -14,7 +14,10 @@ class AdUnisHSR:
                           'https%3a%2f%2funterricht.hsr.ch%2f')
     MODULE_BASE_NEXT = HSR_BASE + "NextSem/TimeTable/Overview/Module"
     # TODO: Test when ready: MODULE_BASE_NEXT = HSR_BASE + "NextSem/TimeTable/Overview/Module"
-    MY_TIMETABLE = HSR_BASE + 'NextSem/TimeTable/Overview/Me'
+    TIMETABLE_ME = HSR_BASE + '%s/TimeTable/Overview/Me'
+    TIMETABLE_USER = HSR_BASE + '%s/TimeTable/Overview/Student'
+    CURRENT_PLACEHOLDER = 'CurrentSem'
+    NEXT_PLACEHOLDER = 'NextSem'
 
     def __init__(self):
         self.session = requests.Session()
@@ -89,6 +92,43 @@ class AdUnisHSR:
             #     av_url = AVAILABILITY_BASE + '?id=' + modules_ids[module]
             #     parse_availability(lectures[module], session.get(av_url, headers=headers).json())
         return lectures
+
+    def _all_student_numbers(self):
+        # TODO: cache!
+        students = {}
+        pattern = re.compile('(.*) \(([0-9]*)\)')
+
+        html = BeautifulSoup(self.session.get(self.TIMETABLE_USER % self.CURRENT_PLACEHOLDER).text, "lxml")
+        for option in html.select("#Parameter_StudentRollenId .selectListLevel1"):
+            groups = pattern.match(option.get_text()).groups()
+            students[groups[1]] = {'names': groups[0], 'internal_id': option.get('value')}
+
+        return students
+
+    def timetable_curr_sem(self, stud_nr=None):
+        """
+        If no user is given, the current logged-in user is used.
+        """
+        return self._timetable_for_sem(stud_nr, self.CURRENT_PLACEHOLDER)
+
+
+    def timetable_next_sem(self, stud_nr=None):
+        """
+        If no user is given, the current logged-in user is used.
+        """
+        return self._timetable_for_sem(stud_nr, self.NEXT_PLACEHOLDER)
+
+    def _timetable_for_sem(self, stud_nr, semester):
+        url = self.TIMETABLE_ME % semester
+        if stud_nr is not None:
+            internal_id = self._all_student_numbers()[str(stud_nr)]['internal_id']
+            url = (self.TIMETABLE_USER % semester) + '?studId=' + internal_id
+
+        response = self.session.get(url)
+        if response.status_code == requests.codes.ok:
+            return self._parse_timetable(response.text)
+        else:
+            raise Exception("Whops...TODO")
 
     def _parse_timetable(self, raw):
         soup = BeautifulSoup(raw, "lxml")

@@ -28,7 +28,7 @@ username=<hsr-username>
 password=<hsr-passwort>
 ```
 
-Die Demo kann nun mittels `sudo make demo` ausgeführt werden.
+Die Demo kann nun mittels `sudo make demo_timetables` ausgeführt werden.
 
 Das Resultat sollte etwa so aussehen:
 
