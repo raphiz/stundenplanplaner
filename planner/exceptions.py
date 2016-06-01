@@ -1,5 +1,9 @@
 
-class DatasourceException(Exception):
+class TimeTableException(Exception):
+    pass
+
+
+class DatasourceException(TimeTableException):
     pass
 
 

@@ -16,6 +16,9 @@ demo_timetables:
 demo_friends:
 	$(run_in_docker) "/src/setup.py develop -N;python demos/friends.py;rm -Rf planner.egg-info"
 
+demo_export:
+	$(run_in_docker) "/src/setup.py develop -N;python demos/export_timetable.py;rm -Rf planner.egg-info"
+
 
 python_shell:
 	$(run_in_docker) "python"

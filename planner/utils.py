@@ -1,7 +1,12 @@
-from configparser import ConfigParser
 import os
+
+from datetime import datetime, timedelta, time
+
+from configparser import ConfigParser
 from tabulate import tabulate
-from datetime import time
+from isoweek import Week
+from icalendar import Calendar, Event, vText
+
 
 DAYS_OF_THE_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -64,3 +69,45 @@ def print_time_table(lectures):
     for lecture in lectures:
         if lecture['weeks'] is not None:
             print("WARNING: Lesson %s is only in KW %s" % (lecture['name'], lecture['weeks']))
+
+
+def export_to_ical(destination, lessons, start=None, end=None, year=None, weeks=None):
+    """
+    Export the given lessons to ical for the given year and week or start and end date.
+
+    The destination must be the path to the ical file to writer.
+
+    lessons must be in the same format as returned by AdUnisHSR.
+
+    Weeks must be an iterable returning the KW number(int) (eg. 44, 45, 46)
+    """
+
+    if start is not None and end is not None:
+        weeks = range(Week.withdate(start).week, Week.withdate(end).week+1)
+        year = start.year
+    elif not (weeks is not None and year is not None):
+        raise TimeTableException('You must either provide a week and a year or start and end date')
+
+    cal = Calendar()
+    cal.add('prodid', '-//timetable2ical//mxm.dk//')
+    cal.add('version', '2.0')
+
+    for week in weeks:
+        reference = datetime.combine(Week(year, week).monday(), time.min)
+        # TODO: KWs!
+        for lesson in lessons:
+            event = Event()
+            # print(lesson)
+            start = reference + timedelta(
+                days=DAYS_OF_THE_WEEK.index(lesson['day']),
+                hours=lesson['start_time'].hour,
+                minutes=lesson['start_time'].minute)
+            end = start + timedelta(minutes=45)
+            event.add('summary', "%s (%s)" % (lesson['name'], lesson['teacher']))
+            event.add('dtstart', start)
+            event.add('dtend', end)
+            event.add('categories', lesson['abbrev'])
+            cal.add_component(event)
+
+    with open(destination, 'wb') as f:
+        f.write(cal.to_ical())

@@ -10,3 +10,4 @@ vcrpy
 pytest>=2.2
 pytest-sugar>=0.5
 pytest-cov>=2.2
+isoweek
