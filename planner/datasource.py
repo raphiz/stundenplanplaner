@@ -256,35 +256,18 @@ class _AdUnisScraper:
     def __init__(self):
         self.session = requests.Session()
 
-    def _in_HSR_network(self):
-        response = requests.get(self.HSR_BASE_URL)
-        return response.status_code == 401
-
     def signin(self, user, password):
-        if self._in_HSR_network():
-            self.session.auth = HttpNtlmAuth('HSR\\'+user, password, self.session)
-            response = self.session.get(self.INTERNAL_LOGIN_URL)
+        payload = {
+            'UserName': 'hsr.ch\%s' % user,
+            'Password': password,
+            'AuthMethod': 'FormsAuthentication'
+        }
+        # Get the cookie
+        self.session.get(self.HSR_BASE_URL)
+        response = self.session.post(self.EXTERNAL_LOGIN_URL, data=payload)
 
-            if not response.status_code == 200:
-                raise AuthenticationException("Authentication has failed (Status code was %s)!"
-                                              % response.status_code)
-        else:
-            response = self.session.get(self.EXTERNAL_LOGIN_URL)
-            html = BeautifulSoup(response.text, "lxml")
-            payload = {
-                'ctl00$ContentPlaceHolder1$UsernameTextBox': user,
-                'ctl00$ContentPlaceHolder1$PasswordTextBox': password,
-                'ctl00$ContentPlaceHolder1$SubmitButton': '',
-                '__db': html.select('input[name="__db"]')[0]['value'],
-                '__VIEWSTATE': html.select('input[name="__VIEWSTATE"]')[0]['value'],
-                '__VIEWSTATEGENERATOR': html.select('[name="__VIEWSTATEGENERATOR"]')[0]['value'],
-                '__EVENTVALIDATION': html.select('[name="__EVENTVALIDATION"]')[0]['value']
-            }
-
-            response = self.session.post(self.EXTERNAL_LOGIN_URL, data=payload)
-
-            if 'set-cookie' not in response.headers.keys():
-                raise AuthenticationException("Authentication has failed (Not accepted)!")
+        if 'set-cookie' not in response.headers.keys():
+            raise AuthenticationException("Authentication has failed (Not accepted)!")
 
         html = BeautifulSoup(response.text, "lxml")
 
