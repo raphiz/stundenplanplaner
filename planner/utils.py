@@ -1,6 +1,6 @@
 import os
 
-from datetime import datetime, timedelta, time
+from datetime import datetime, date, timedelta, time
 
 from configparser import ConfigParser
 from tabulate import tabulate
@@ -37,12 +37,17 @@ def time_slots():
     """
     Returns all start times of the available slots
     """
-    times = []
-    current_time = time(7, 5)
-    while current_time < time(21):
-        times.append(current_time)
-        current_time = time(current_time.hour+1, (5 if current_time.minute == 10 and not current_time.hour == 12 else 10))
-    return times
+    break_durations = [20, 10, 20, 10, 20, 15, 10, 20, 10, 10, 10, 30, 10]
+    first_slot = time(7, 5)
+    lesson_duration = 45
+
+    def me(slots, break_duration):
+        previous_dtime = datetime.combine(date.today(), slots[-1])
+        current_dtime = previous_dtime + timedelta(minutes=break_duration + lesson_duration)
+        slots.append(current_dtime.time())
+        return slots
+
+    return reduce(me, break_durations, [first_slot])
 
 
 def print_time_table(lectures):
