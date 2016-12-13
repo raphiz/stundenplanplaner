@@ -52,3 +52,10 @@ Time      Mon      Tue       Wed       Thu       Fri       Sat    Sun
 
 [...]
 ```
+
+## Troubleshooting
+
+* Zugangsdaten korrekt? → `auth.cfg`
+* Problem mit gecacheden Daten? `fixtures`-Ordner löschen
+* Weiter?
+    * Issue erstellen oder mit @raphiz reden
