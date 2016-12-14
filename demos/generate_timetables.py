@@ -3,10 +3,7 @@ from planner import Planner
 from planner import utils
 from planner import restrictions
 from datetime import time
-import vcr
 
-
-# with vcr.use_cassette('fixtures/demo_timetables', record_mode='new_episodes'):
 module_spec = {'Dbs2': {'v': 2, 'u': 2},
                'BuRe2a': [
                 {'abbrev': 'ReVertr', 'v': 2},
