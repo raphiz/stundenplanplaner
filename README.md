@@ -1,6 +1,8 @@
 # Stundenplanplaner
 
-## Work in progres...
+## ~Work in progres...~ Discontinued
+
+Funktioniert mit dem neuen AdUnis Layout nicht mehr - falls du interesse hast das Projekt zu nutzen, dann schreib mir [eine E-Mail](https://www.raphael.li/contact/).
 
 **Wenn du dieses Projekt nutzt und/oder unsterstüzenswert findest, dann hilf doch bitte mit!**
 Das kannst du indem du...
